@@ -7,7 +7,7 @@ $Auth->Initialization();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-if ($Auth->Authenticate(true)) {
+if ($Auth->Authenticate()) {
   // SMTP服务器
   $Host = (string)$Auth->StringParameters('Host', 'smtp.qiye.163.com');
   // SMTP身份验证
