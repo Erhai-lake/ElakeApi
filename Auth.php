@@ -4,7 +4,7 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-$Dotenv = Dotenv\Dotenv::createImmutable(str_replace('\index', '', __DIR__));
+$Dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $Dotenv->load();
 
 $ValidRequest  = null;
