@@ -52,8 +52,8 @@ class Auth
     global $MySQL, $Redis, $APPRow;
     if ($DeBUG) {
       // !DeBUG请求头,上线前注释!
-      // $this->Normal(false);
-      // return true;
+      $this->Normal(false);
+      return true;
     } else {
       // !DeBUG请求头,上线前注释!
       // if ($_SERVER['HTTP_DEBUG'] == 'true') {
@@ -168,7 +168,6 @@ class Auth
     if (!isset($_GET[$Name]) || empty($_GET[$Name])) {
       if ($Default === null) {
         $this->Missing();
-        return '';
       }
       return (string)$Default;
     } else {
@@ -182,7 +181,6 @@ class Auth
     if (!isset($_GET[$Name])) {
       if ($Default === null) {
         $this->Missing();
-        return '';
       }
       return (int)$Default;
     }
@@ -195,7 +193,6 @@ class Auth
     $Value = (int)$this->IntParameters($Name, $Default);
     if ($Value > $Max) {
       $this->Abnormal();
-      return '';
     }
     return (int)$Value;
   }
@@ -206,7 +203,6 @@ class Auth
     $Value = (int)$this->IntParameters($Name, $Default);
     if ($Value < $Min) {
       $this->Abnormal();
-      return '';
     }
     return (int)$Value;
   }
@@ -217,7 +213,6 @@ class Auth
     $Value = (int)$this->IntParameters($Name, $Default);
     if ($Value < $Min || $Value > $Max) {
       $this->Abnormal();
-      return '';
     }
     return (int)$Value;
   }
@@ -227,11 +222,9 @@ class Auth
   {
     if (!isset($_GET[$Name])) {
       $this->Missing();
-      return '';
     } else {
       if (!in_array($_GET[$Name], $Limit)) {
         $this->Abnormal();
-        return '';
       }
     }
     return $_GET[$Name];
@@ -242,11 +235,9 @@ class Auth
   {
     if (!isset($_GET[$Name])) {
       $this->Missing();
-      return '';
     } else {
       if (in_array($_GET[$Name], $Limit)) {
         $this->Abnormal();
-        return '';
       }
     }
     return $_GET[$Name];
@@ -257,11 +248,9 @@ class Auth
   {
     if (!isset($_GET[$Name])) {
       $this->Missing();
-      return '';
     } else {
       if (!preg_match($PCREP, $_GET[$Name])) {
         $this->Abnormal();
-        return '';
       }
     }
     return $_GET[$Name];
@@ -272,7 +261,6 @@ class Auth
   {
     if (!isset($_COOKIE[$Name]) || empty($_COOKIE[$Name])) {
       $this->Missing();
-      return '';
     }
     return $_COOKIE[$Name];
   }
