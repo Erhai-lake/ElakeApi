@@ -1,9 +1,0 @@
-MySQLHostName = localhost
-MySQLPort = 3306
-MySQLDatabase = ElakeAPI
-MySQLUserName = ElakeAPI
-MySQLPassword = ElakeAPI
-
-RedisHostName = localhost
-RedisHostPort = 6379
-RedisPassword = ElakeAPI
