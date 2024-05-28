@@ -10,15 +10,13 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Curl = curl_init();
-  curl_setopt($Curl, CURLOPT_URL, 'https://s.sfacg.com/default.aspx?Key=' . $Value . '&S=1&SS=0');
-  curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-  $Fh = curl_exec($Curl);
-  curl_close($Curl);
+  $Parameters = [
+    'Key' => $Value,
+    'S' => '1',
+    'SS' => '0'
+  ];
   $Pattern = '/<ul style="width:100%">\s*<li.*?>\s*<img src="(.*?)" .*?>\s*<\/li>\s*<li><strong.*?><a href="(.*?)" .*?>(.*?)<\/a><\/strong><br \/>\s*综合信息： (.*?)<br \/>(.*?)<\/li>\s*<\/ul>/s';
-  preg_match_all($Pattern, $Fh, $Matches);
+  preg_match_all($Pattern, $Auth->Curl('https://s.sfacg.com/default.aspx', $Parameters), $Matches);
   $Data = [];
   for ($I = 0; $I < count($Matches[0]); $I++) {
     $Latest = explode('/', $Matches[4][$I]);

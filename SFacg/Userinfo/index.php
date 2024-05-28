@@ -12,18 +12,11 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Curl = curl_init();
-  curl_setopt($Curl, CURLOPT_URL, 'https://passport.sfacg.com/');
-  curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-  curl_setopt($Curl, CURLOPT_HTTPHEADER, [
+  $Header = [
     'Cookie: session_PC=' . $Session . '; .SFCommunity=' . $Community
-  ]);
-  $Fh = curl_exec($Curl);
-  curl_close($Curl);
+  ];
   $Pattern = '/<div class="wrap_right cover">(.*?)<\/ul>/s';
-  preg_match($Pattern, $Fh, $Matches);
+  preg_match($Pattern, $Auth->Curl('https://passport.sfacg.com/', [], $Header), $Matches);
   $Pattern2 = '/我的账户余额：(.*?)（￥1元 = 100火劵）  总计消费：(.*?)<\/div>/s';
   preg_match($Pattern2, $Matches[1], $BalanceMatches);
   $Pattern3 = '/<li style="line-height:1.5em;float:left;">(.*?)<\/li>/s';

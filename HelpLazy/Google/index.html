@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/base64.min.js"></script>
+  <script src="../js/clipboard.min.js"></script>
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <section id="Search">
+    <div class="SearchHeader">
+      <h2>
+        <img src="Logo.png">
+      </h2>
+    </div>
+
+    <form id="SearchForm">
+      <div class="SearchFormGroup">
+        <div class="SearchFormInput">
+          <input type="search" id="SearchInput" maxlength="255" autocomplete="off" required>
+        </div>
+        <button id="SearchSubmit">Google一下</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="Function">
+    <p id="Tips">输入一个问题,然后点击Google一下</p>
+    <div id="output">
+      <textarea id="UrlOutput" rows="3" readonly></textarea>
+      <div class="tool-btns">
+        <button data-clipboard-target="#UrlOutput">复制</button>
+        <button id="Preview">预览</button>
+      </div>
+    </div>
+  </section>
+
+  <footer id="Footer">
+    <ul class="FooterRight">
+      <li>* 本站与Google公司没有任何联系,本站出现的Google公司Logo均为Google公司的商标</li>
+    </ul>
+  </footer>
+
+  <div id="Arrow"></div>
+</body>
+
+</html>

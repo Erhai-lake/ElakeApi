@@ -10,15 +10,8 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Curl = curl_init();
-  curl_setopt($Curl, CURLOPT_URL, 'https://book.sfacg.com/Novel/' . $ID . '/MainIndex/');
-  curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-  $Fh = curl_exec($Curl);
-  curl_close($Curl);
   $Pattern = '/<div class="story-catalog">.*?<h3 class="catalog-title">【.*?】 (.*?)<\/h3>.*?<ul class="clearfix">.\s*<li>(.*?)<\/li>.\s*<\/ul>/s';
-  preg_match_all($Pattern, $Fh, $ReelMatches);
+  preg_match_all($Pattern, $Auth->Curl('https://book.sfacg.com/Novel/'. $ID . '/MainIndex/'), $ReelMatches);
   $Pattern2 = '/<a href="(.*?)" title="(.*?)" .*?>.*?<\/a>/s';
   $Data = [];
   for ($I = 0; $I < count($ReelMatches[0]); $I++) {

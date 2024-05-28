@@ -15,17 +15,15 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
   header("Content-Type: PNG");
-  $Curl = curl_init();
-  curl_setopt($Curl, CURLOPT_URL, 'https://book.sfacg.com/ajax/ashx/common.ashx?op=getChapPic&cid=' . $ChaptersID . '&nid=' . $NovelID);
-  curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-  curl_setopt($Curl, CURLOPT_HTTPHEADER, [
+  $Parameters = [
+    'op' => 'getChapPic',
+    'cid' => $ChaptersID,
+    'nid' => $NovelID
+  ];
+  $Header = [
     'Cookie: .SFCommunity=' . $Community
-  ]);
-  $Fh = curl_exec($Curl);
-  curl_close($Curl);
-  echo $Fh;
+  ];
+  echo $Auth->Curl('https://book.sfacg.com/ajax/ashx/common.ashx', $Parameters, $Header);
   exit();
 }
 
