@@ -10,15 +10,11 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Curl = curl_init();
-  curl_setopt($Curl, CURLOPT_URL, 'https://icp.gov.moe/?keyword=' . $ICP);
-  curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-  $Fh = curl_exec($Curl);
-  curl_close($Curl);
+  $Parameters = [
+    'keyword' => $ICP
+  ];
   $Pattern = '/<div class="value">(.*?)<\/div>/s';
-  preg_match_all($Pattern, $Fh, $Matches);
+  preg_match_all($Pattern, $Auth->Curl('https://icp.gov.moe/', $Parameters), $Matches);
   $Name = isset($Matches[1][0]) ? $Matches[1][0] : "无";
   $Domain = isset($Matches[1][1]) ? $Matches[1][1] : "无";
   $Info = isset($Matches[1][3]) ? $Matches[1][3] : "无";

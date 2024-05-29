@@ -12,7 +12,13 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $NewsJson = json_decode(file_get_contents('https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2509&num=' . $Limit . '&page=' . $Page), true)['result']['data'];
+  $Parameters = [
+    'pageid' => '153',
+    'lid' => '2509',
+    'num' => $Limit,
+    'page' => $Page
+  ];
+  $NewsJson = json_decode($Auth->Curl('https://feed.mix.sina.com.cn/api/roll/get', $Parameters), true)['result']['data'];
   $News = [];
   foreach ($NewsJson as $Item) {
     $News[] = [

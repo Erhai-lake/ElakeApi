@@ -12,7 +12,13 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $BingJson = json_decode(file_get_contents('https://cn.bing.com/HPImageArchive.aspx?format=js&idx=' . $Page . '&n=' . $Limit . '&mkt=zh-CN'), true)['images'];
+  $Parameters = [
+    'format' => 'js',
+    'idx' => $Page,
+    'n' => $Limit,
+    'mkt' => 'zh-CN'
+  ];
+  $BingJson = json_decode($Auth->Curl('https://cn.bing.com/HPImageArchive.aspx', $Parameters), true)['images'];
   $Data = [];
   foreach ($BingJson as $Item) {
     $Data[] = [

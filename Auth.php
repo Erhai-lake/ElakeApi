@@ -47,19 +47,13 @@ class Auth
   }
 
   // 身份验证
-  public function Authenticate($DeBUG = false): bool
+  public function Authenticate($AuthenticateSwitch = false): bool
   {
     global $MySQL, $Redis, $APPRow;
-    if ($DeBUG) {
-      // !DeBUG请求头,上线前注释!
+    if ($AuthenticateSwitch) {
       $this->Normal(false);
       return true;
     } else {
-      // !DeBUG请求头,上线前注释!
-      // if ($_SERVER['HTTP_DEBUG'] == 'true') {
-      //   $this->Normal(false);
-      //   return true;
-      // }
       // 数据库连接失败
       if ($MySQL === null) {
         return false;
@@ -327,6 +321,21 @@ class Auth
     return;
   }
 
+  // 第三方异常
+  public function ThirdParty(): void
+  {
+    global $ValidRequest, $Response, $MySQL, $APPRow;
+    if ($MySQL === null) {
+      return;
+    }
+    $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '第三方异常');
+    http_response_code(500);
+    $ValidRequest = false;
+    $Response['Code'] = 6;
+    $Response['Message'] = '第三方异常';
+    return;
+  }
+
   // 数据库建立连接
   private function DatabaseEstablishesConnection(): ?mysqli
   {
@@ -381,5 +390,23 @@ class Auth
     $Host = $_SERVER['HTTP_HOST'];
     $CurrentURL = $Protocol . "://" . $Host;
     return $CurrentURL;
+  }
+
+  // 请求
+  public function Curl(string $Url, array $Parameters = [], array $Header = []): string
+  {
+    $Curl = curl_init();
+    curl_setopt($Curl, CURLOPT_URL, $Url . '?' . http_build_query($Parameters));
+    curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($Curl, CURLOPT_HTTPHEADER, $Header);
+    $Response = curl_exec($Curl);
+    $StatusCode = curl_getinfo($Curl, CURLINFO_HTTP_CODE);
+    curl_close($Curl);
+    if (!($StatusCode >= 200 && $StatusCode < 300)) {
+      $this->ThirdParty();
+    }
+    return $Response;
   }
 }

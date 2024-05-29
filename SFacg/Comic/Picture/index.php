@@ -16,21 +16,17 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Curl = curl_init();
-  curl_setopt($Curl, CURLOPT_URL, 'https://manhua.sfacg.com/mh/' . $ComicID  . '/' . $ChaptersID);
-  curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-  curl_setopt($Curl, CURLOPT_HTTPHEADER, [
+  $Header = [
     'Cookie: session_PC=' . $Session . '; .SFCommunity=' . $Community
-  ]);
-  $Fh = curl_exec($Curl);
+  ];
   $Pattern = '/<script language="javascript">.*?var c = (.*?);.*?<\/script>/s';
-  preg_match($Pattern, $Fh, $Matches);
-  curl_setopt($Curl, CURLOPT_URL, 'https://manhua.sfacg.com/ajax/Common.ashx?op=getPics&cid=' . $Matches[1] . '&chapId=' . $ChaptersID);
-  $Fh = curl_exec($Curl);
-  curl_close($Curl);
-  $Json = json_decode($Fh, true)['data'];
+  preg_match($Pattern, $Auth->Curl('https://manhua.sfacg.com/mh/' . $ComicID  . '/' . $ChaptersID, [], $Header), $Matches);
+  $Parameters = [
+    'op' => 'getPics',
+    'cid' => $Matches[1],
+    'chapId' => $ChaptersID
+  ];
+  $Json = json_decode($Auth->Curl('https://manhua.sfacg.com/ajax/Common.ashx', $Parameters, $Header), true)['data'];
   $Response['Data'] = $Json;
 }
 

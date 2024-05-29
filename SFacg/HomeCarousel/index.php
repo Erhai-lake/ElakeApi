@@ -8,15 +8,8 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Curl = curl_init();
-  curl_setopt($Curl, CURLOPT_URL, 'https://book.sfacg.com/');
-  curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-  $Fh = curl_exec($Curl);
-  curl_close($Curl);
   $Pattern = '/<li>\s*<a\s+href="([^"]+)"[^>]*>\s*<img\s+[^>]*data-original="([^"]+)"[^>]*>\s*<\/a>\s*<\/li>/s';
-  preg_match_all($Pattern, $Fh, $Matches, PREG_SET_ORDER);
+  preg_match_all($Pattern, $Auth->Curl('https://book.sfacg.com/'), $Matches, PREG_SET_ORDER);
   $Data = [];
   foreach ($Matches as $Item) {
     if (substr($Item[1], 0, 7) === 'http://' || substr($Item[1], 0, 8) === 'https://') {

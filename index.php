@@ -1,5 +1,5 @@
 <?php
-// 延迟
+// 服务测试
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Auth.php';
 $Auth = new Auth();
 $Auth->Initialization();
@@ -8,11 +8,7 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Authenticat = substr($_SERVER['HTTP_AUTHORIZATION'], 7);
-  $Authenticat = base64_decode($Authenticat);
-  $Authenticat = json_decode($Authenticat, true);
-  $Timestamp = $Authenticat['Timestamp'];
-  $Response['Data'] = time() - $Timestamp;
+  $Response['Data'] = (string)round((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2) . 'ms';
 }
 
 $Auth->End();

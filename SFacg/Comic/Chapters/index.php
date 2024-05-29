@@ -10,15 +10,8 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Curl = curl_init();
-  curl_setopt($Curl, CURLOPT_URL, 'https://manhua.sfacg.com/mh/' . $ID);
-  curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-  curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-  $Fh = curl_exec($Curl);
-  curl_close($Curl);
   $Pattern = '/<div class="comic_Serial_list">(.*?)<\/div>/s';
-  preg_match_all($Pattern, $Fh, $ReelMatches);
+  preg_match_all($Pattern, $Auth->Curl('https://manhua.sfacg.com/mh/' . $ID), $ReelMatches);
   $Pattern2 = '/<a href="(.*?)" .*?>(.*?)<\/a>/s';
   $Pattern3 = '/<b>VIP<\/b>/s';
   for ($I = 0; $I < count($ReelMatches[0]); $I++) {
