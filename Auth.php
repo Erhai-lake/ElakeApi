@@ -7,8 +7,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 $Dotenv = Dotenv\Dotenv::createImmutable(str_replace('/index', '', str_replace('\index', '', __DIR__)));
 $Dotenv->load();
 
+$Code  = json_decode(file_get_contents(__DIR__ . '/Code.json'), true);
 $ValidRequest  = null;
-$Response  = null;
+$Response = [
+  'Code' => 0,
+  'Message' => '',
+  'Data' => [],
+  'Tips' => 'API接口由洱海工作室(https://www.elake.top)免费提供',
+  'Timestamp' => time()
+];
 $MySQL = null;
 $Redis = null;
 $APPRow = null;
@@ -18,16 +25,12 @@ class Auth
   // 初始化
   public function Initialization(): void
   {
-    global $ValidRequest, $Response, $MySQL, $Redis;
-    http_response_code(401);
-    $ValidRequest = false;
-    $Response = [
-      'Code' => 1,
-      'Message' => '非法请求',
-      'Data' => [],
-      'Tips' => 'API接口由洱海工作室(https://www.elake.top)免费提供',
-      'Timestamp' => time()
-    ];
+    global $Code, $ValidRequest, $Response, $MySQL, $Redis;
+    $CodeArray = $Code['1'];
+    $Response['Code'] = 1;
+    $Response['Message'] = $CodeArray['Message'];
+    $ValidRequest = $CodeArray['ValidRequest'];
+    http_response_code($CodeArray['Code']);
     $MySQL = $this->DatabaseEstablishesConnection();
     $Redis = $this->CacheEstablishesConnection();
   }
@@ -262,47 +265,50 @@ class Auth
   // 正常
   public function Normal(bool $APILog = true): void
   {
-    global $ValidRequest, $Response, $MySQL, $APPRow;
+    global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
     if ($APILog) {
       if ($MySQL === null) {
         return;
       }
       $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '成功');
     }
-    http_response_code(200);
-    $ValidRequest = true;
+    $CodeArray = $Code['0'];
     $Response['Code'] = 0;
-    $Response['Message'] = '成功';
+    $Response['Message'] = $CodeArray['Message'];
+    $ValidRequest = $CodeArray['ValidRequest'];
+    http_response_code($CodeArray['Code']);
     return;
   }
 
   // 参数缺失
   public function Missing(): void
   {
-    global $ValidRequest, $Response, $MySQL, $APPRow;
+    global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
     if ($MySQL === null) {
       return;
     }
     $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数缺失');
-    http_response_code(400);
-    $ValidRequest = false;
+    $CodeArray = $Code['2'];
     $Response['Code'] = 2;
-    $Response['Message'] = '参数缺失';
+    $Response['Message'] = $CodeArray['Message'];
+    $ValidRequest = $CodeArray['ValidRequest'];
+    http_response_code($CodeArray['Code']);
     return;
   }
 
   // 参数异常
   public function Abnormal(): void
   {
-    global $ValidRequest, $Response, $MySQL, $APPRow;
+    global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
     if ($MySQL === null) {
       return;
     }
     $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数异常');
-    http_response_code(400);
-    $ValidRequest = false;
+    $CodeArray = $Code['3'];
     $Response['Code'] = 3;
-    $Response['Message'] = '参数异常';
+    $Response['Message'] = $CodeArray['Message'];
+    $ValidRequest = $CodeArray['ValidRequest'];
+    http_response_code($CodeArray['Code']);
     return;
   }
 
@@ -324,39 +330,41 @@ class Auth
   // 第三方异常
   public function ThirdParty(): void
   {
-    global $ValidRequest, $Response, $MySQL, $APPRow;
+    global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
     if ($MySQL === null) {
       return;
     }
     $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '第三方异常');
-    http_response_code(500);
-    $ValidRequest = false;
+    $CodeArray = $Code['6'];
     $Response['Code'] = 6;
-    $Response['Message'] = '第三方异常';
+    $Response['Message'] = $CodeArray['Message'];
+    $ValidRequest = $CodeArray['ValidRequest'];
+    http_response_code($CodeArray['Code']);
     return;
   }
 
   // 数据库建立连接
   private function DatabaseEstablishesConnection(): ?mysqli
   {
-    global $ValidRequest, $Response;
+    global $Code, $ValidRequest, $Response;
     $MySQL = new mysqli($_ENV['MySQLHostName'], $_ENV['MySQLUserName'], $_ENV['MySQLPassword'], $_ENV['MySQLDatabase'], $_ENV['MySQLPort']);
     if (!$MySQL->connect_error) {
       if ($MySQL->ping()) {
         return $MySQL;
       }
     }
-    http_response_code(500);
-    $ValidRequest = false;
+    $CodeArray = $Code['4'];
     $Response['Code'] = 4;
-    $Response['Message'] = '服务器错误';
+    $Response['Message'] = $CodeArray['Message'];
+    $ValidRequest = $CodeArray['ValidRequest'];
+    http_response_code($CodeArray['Code']);
     return null;
   }
 
   // 缓存建立连接
   private function CacheEstablishesConnection(): ?redis
   {
-    global $ValidRequest, $Response;
+    global $Code, $ValidRequest, $Response;
     $Redis = new Redis();
     if ($Redis->connect($_ENV['RedisHostName'], $_ENV['RedisHostPort'])) {
       $Redis->auth($_ENV['RedisPassword']);
@@ -364,10 +372,11 @@ class Auth
         return $Redis;
       }
     }
-    http_response_code(500);
-    $ValidRequest = false;
+    $CodeArray = $Code['4'];
     $Response['Code'] = 4;
-    $Response['Message'] = '服务器错误';
+    $Response['Message'] = $CodeArray['Message'];
+    $ValidRequest = $CodeArray['ValidRequest'];
+    http_response_code($CodeArray['Code']);
     return null;
   }
 

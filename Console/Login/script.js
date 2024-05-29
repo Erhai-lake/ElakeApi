@@ -1,21 +1,21 @@
 // 页面加载完毕
 window.onload = () => {
-  const Content = document.getElementById('Content')
+  // const Content = document.getElementById('Content')
   const PreviousStep = document.getElementById('PreviousStep')
   const NextStep = document.getElementById('NextStep')
   const ContentNum = (document.getElementById('ContentNum'))
 
   // 上一步
   PreviousStep.addEventListener('click', () => {
-    const Step1 = document.getElementById('Content' + String(Number(ContentNum.textContent)))
-    const Step2 = document.getElementById('Content' + String(Number(ContentNum.textContent) - 1))
+    const CurrentStep = Number(ContentNum.textContent);
     switch (Number(ContentNum.textContent)) {
       case 1:
         break
       case 2:
-        Step1.classList.remove('Selected')
-        Step2.classList.add('Selected')
-        ContentNum.textContent = '1'
+        ToggleStep(CurrentStep, CurrentStep - 1)
+        break
+      case 3:
+        ToggleStep(CurrentStep, CurrentStep - 1)
         break
     }
   });
@@ -28,6 +28,9 @@ window.onload = () => {
         ToggleStep(CurrentStep, CurrentStep + 1)
         break
       case 2:
+        ToggleStep(CurrentStep, CurrentStep + 1)
+        break
+      case 3:
         break
     }
   });
@@ -36,8 +39,12 @@ window.onload = () => {
   const ToggleStep = (Curren, Next) => {
     const CurrentContent = document.getElementById('Content' + Curren)
     const NextContent = document.getElementById('Content' + Next)
+    const CurrentContentItem = document.getElementById('Selected' + Curren)
+    const NextContentItem = document.getElementById('Selected' + Next)
     CurrentContent.classList.remove('Selected')
     NextContent.classList.add('Selected')
+    CurrentContentItem.classList.remove('Selected')
+    NextContentItem.classList.add('Selected')
     ContentNum.textContent = Next
   }
 }
