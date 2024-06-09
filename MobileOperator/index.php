@@ -6,7 +6,7 @@ $Auth->Initialization();
 
 if ($Auth->Authenticate()) {
   // 电话号码
-  $PhoneNumber = (string)$Auth->PCREParameters('PhoneNumber', '/^1\d{10}$/');
+  $PhoneNumber = (string)$Auth->PCREParameters($Auth->StringParameters('PhoneNumber'), '/^1\d{10}$/', true);
 }
 
 if ($ValidRequest) {

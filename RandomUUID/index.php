@@ -6,20 +6,28 @@ $Auth->Initialization();
 
 use Ramsey\Uuid\Uuid;
 
-if ($Auth->Authenticate()) {
+if ($Auth->Authenticate(true)) {
   // UUID版本
-  $Version = (int)$Auth->WhitelistParameters('Version', [1, 4]);
+  $Version = (int)$Auth->WhitelistParameters('Version', [1, 4, 5]);
   // 数量
   $Limit = (int)$Auth->RangeIntParameters('Limit', 1, 1000);
   // 类型
   $Type = (int)$Auth->RangeIntParameters('Type', 1, 2);
+  // UUID5要的名字
+  $Value = (string)$Auth->StringParameters('Value', 'Elake');
 }
 
 if ($ValidRequest) {
-  if ($Version === 1) {
-    $UUIDs = UUIDv1();
-  } else {
-    $UUIDs = UUIDv4();
+  switch ($Version) {
+    case 1:
+      $UUIDs = UUIDv1();
+      break;
+    case 4:
+      $UUIDs = UUIDv4();
+      break;
+    case 5:
+      $UUIDs = UUIDv5($Value);
+      break;
   }
   $Response['Data'] = $UUIDs;
 }
@@ -61,3 +69,21 @@ function UUIDv4(): array
   }
   return $UUIDs;
 }
+
+function UUIDv5(String $Value): array
+{
+  global $Limit, $Type;
+  $UUIDs = [];
+  for ($I = 0; $I < $Limit; $I++) {
+    $UUID = Uuid::uuid5('6ba7b810-9dad-11d1-80b4-00c04fd430c8', $Value);
+    if ($Type === 1) {
+      $UUIDString = strtolower($UUID->toString());
+    } else {
+      $UUIDString = strtoupper($UUID->toString());
+    }
+
+    $UUIDs[] = $UUIDString;
+  }
+  return $UUIDs;
+}
+

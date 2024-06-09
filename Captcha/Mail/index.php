@@ -13,13 +13,13 @@ if ($Auth->Authenticate()) {
   // SMTP身份验证
   $SMTPAuth = (int)$Auth->RangeIntParameters('SMTPAuth', 1, 2, 1);
   // SMTP用户名
-  $Name = (string)$Auth->StringParameters('Name', 'elakeserver@elake.top');
+  $Name = (string)$Auth->StringParameters('Name', $_ENV['MailBox']);
   // SMTP密码
-  $Password = (string)$Auth->StringParameters('Password', 'BBv7xpFxJUXD4cnv');
+  $Password = (string)$Auth->StringParameters('Password', $_ENV['MailBoxPassword']);
   // SMTP端口
   $Port = (int)$Auth->IntParameters('Port', 587);
   // 发信人邮箱地址
-  $SenderEmail = (string)$Auth->StringParameters('SenderEmail', 'elakeserver@elake.top');
+  $SenderEmail = (string)$Auth->StringParameters('SenderEmail', $_ENV['MailBox']);
   // 发信人名称
   $SenderName = (string)$Auth->StringParameters('SenderName', '洱海工作室');
   // 收信人邮箱地址

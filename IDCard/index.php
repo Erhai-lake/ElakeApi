@@ -6,7 +6,10 @@ $Auth->Initialization();
 
 if ($Auth->Authenticate()) {
   // 身份证号码
-  $IDCard = (string)$Auth->PCREParameters('IDCard', '/^\d{17}[\dXx]$/i');
+  $IDCard = (string)$Auth->PCREParameters($Auth->StringParameters('IDCard'), '/^\d{17}[\dXx]$/i', true);
+}
+
+if ($ValidRequest) {
   $IDCard = strtoupper($IDCard);
   $Wi = array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
   $Ai = array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2');
@@ -18,9 +21,6 @@ if ($Auth->Authenticate()) {
   if ($LastChar !== $IDCard[17]) {
     $Auth->Abnormal();
   }
-}
-
-if ($ValidRequest) {
   $Response['Data'] = array(
     'Gender' => Gender(),
     'Age' => Age(),

@@ -1,10 +1,8 @@
-.env
 .htaccess
-模板.php
+nginx.htaccess
+Demo.php
+Config.txt
 认证数据生成器.e
 认证数据生成器.zip
 认证数据生成器.exe
-Code
-Config.txt
-nginx.htaccess
 MySQL.sql
