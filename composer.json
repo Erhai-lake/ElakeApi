@@ -3,6 +3,7 @@
         "vlucas/phpdotenv": "^5.5",
         "ramsey/uuid": "^4.2",
         "endroid/qrcode": "^4.6",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "overtrue/chinese-calendar": "^1.0"
     }
 }

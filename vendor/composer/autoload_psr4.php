@@ -14,6 +14,7 @@ return array(
     'Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src/PhpOption'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
+    'Overtrue\\ChineseCalendar\\' => array($vendorDir . '/overtrue/chinese-calendar/src'),
     'GrahamCampbell\\ResultType\\' => array($vendorDir . '/graham-campbell/result-type/src'),
     'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qrcode/src'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),

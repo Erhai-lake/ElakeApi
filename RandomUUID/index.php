@@ -6,7 +6,7 @@ $Auth->Initialization();
 
 use Ramsey\Uuid\Uuid;
 
-if ($Auth->Authenticate(true)) {
+if ($Auth->Authenticate()) {
   // UUID版本
   $Version = (int)$Auth->WhitelistParameters('Version', [1, 4, 5]);
   // 数量

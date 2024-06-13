@@ -32,6 +32,10 @@ class ComposerStaticInitaba57e9480e3cfca049a9d89604338f4
             'PhpOption\\' => 10,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
+        'O' => 
+        array (
+            'Overtrue\\ChineseCalendar\\' => 25,
+        ),
         'G' => 
         array (
             'GrahamCampbell\\ResultType\\' => 26,
@@ -84,6 +88,10 @@ class ComposerStaticInitaba57e9480e3cfca049a9d89604338f4
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Overtrue\\ChineseCalendar\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/overtrue/chinese-calendar/src',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (
