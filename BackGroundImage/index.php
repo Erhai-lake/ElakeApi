@@ -43,7 +43,6 @@ if ($ValidRequest) {
         $Data = $URl[$Source - 1];
     }
     if ($Data !== '图床异常') {
-        // $Response['Data'] = $Data;
         header('Content-Type: PNG');
         echo $Auth->Curl($Data[0]);
     } else {
