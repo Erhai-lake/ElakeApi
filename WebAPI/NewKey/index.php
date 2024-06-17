@@ -17,8 +17,7 @@ if ($ValidRequest) {
         $STMT->execute();
         $Result = $STMT->get_result();
         $STMT->close();
-        $KeyNum = $Result->num_rows;
-        if ($KeyNum < $UserRow['LimitAPP']) {
+        if ($Result->num_rows < $UserRow['LimitAPP']) {
             $SecretID = UUID4();
             $SecretKey = UUID5($SecretID);
             $SQL = 'INSERT INTO APPs (UserID, SecretID, SecretKey, AccessControl, Switch) VALUES (?, ?, ?, 0, 0)';

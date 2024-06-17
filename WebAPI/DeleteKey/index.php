@@ -15,8 +15,7 @@ if ($ValidRequest) {
         $STMT->execute();
         $Result = $STMT->get_result();
         $STMT->close();
-        $KeyNum = $Result->num_rows;
-        if ($KeyNum > 1) {
+        if ($Result->num_rows > 1) {
             $SQL = 'DELETE FROM APPs WHERE SecretID = ? AND SecretKey = ?';
             $STMT = $MySQL->prepare($SQL);
             $STMT->bind_param('ss', $Authenticat['SecretID'], $Authenticat['SecretKey']);
