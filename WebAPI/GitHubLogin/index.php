@@ -38,12 +38,23 @@ if ($ValidRequest) {
                     $GitHubID = $Json['id'];
                     $GitHubName = $Json['login'];
                     $IP = $_SERVER['REMOTE_ADDR'];
-                    $SQL = "SELECT * FROM Users WHERE GitHubID = '$GitHubID'";
-                    $Result = $MySQL->query($SQL);
+                    $SQL = 'SELECT * FROM Users WHERE GitHubID = ?';
+                    $STMT = $MySQL->prepare($SQL);
+                    $STMT->bind_param('s', $GitHubID);
+                    $STMT->execute();
+                    $Result = $STMT->get_result();
+                    $STMT->close();
                     if ($Result->num_rows > 0) {
-                        $SQL = "UPDATE Users SET LoginIP = '$IP' WHERE GitHubID = '$GitHubID'";
-                        $MySQL->query($SQL);
-                        $Response['Data'] = '登录成功';
+                        $SQL = 'UPDATE Users SET LoginIP = ? WHERE GitHubID = ?';
+                        $STMT = $MySQL->prepare($SQL);
+                        $STMT->bind_param('ss', $IP . $GitHubID);
+                        $STMT->execute();
+                        $STMT->close();
+                        if ($STMT->affected_rows > 0) {
+                            $Response['Data'] = '登录成功';
+                        } else {
+                            $Auth->Custom('登录失败');
+                        }
                     } else {
                         $SQL = 'INSERT INTO Users (GitHubID, UserName, LoginIP, LimitAPP, Banned) VALUES (?, ?, ?, 3, 0)';
                         $STMT = $MySQL->prepare($SQL);
@@ -51,17 +62,25 @@ if ($ValidRequest) {
                         $STMT->execute();
                         $UserID = $MySQL->insert_id;
                         $STMT->close();
-                        $SecretID = UUID4();
-                        $SecretKey = UUID5($SecretID);
-                        $SQL = 'INSERT INTO APPs (UserID, SecretID, SecretKey, AccessControl, Switch) VALUES (?, ?, ?, 0, 0)';
-                        $STMT = $MySQL->prepare($SQL);
-                        $STMT->bind_param('sss', $UserID, $SecretID, $SecretKey);
-                        $STMT->execute();
-                        $STMT->close();
-                        $Response['Data'] = [
-                            'SecretID' => $SecretID,
-                            'SecretKey' => $SecretKey
-                        ];
+                        if ($STMT->affected_rows > 0) {
+                            $SecretID = UUID4();
+                            $SecretKey = UUID5($SecretID);
+                            $SQL = 'INSERT INTO APPs (UserID, SecretID, SecretKey, AccessControl, Switch) VALUES (?, ?, ?, 0, 0)';
+                            $STMT = $MySQL->prepare($SQL);
+                            $STMT->bind_param('sss', $UserID, $SecretID, $SecretKey);
+                            $STMT->execute();
+                            $STMT->close();
+                            if ($STMT->affected_rows > 0) {
+                                $Response['Data'] = [
+                                    'SecretID' => $SecretID,
+                                    'SecretKey' => $SecretKey
+                                ];
+                            } else {
+                                $Auth->Custom('注册失败');
+                            }
+                        } else {
+                            $Auth->Custom('注册失败');
+                        }
                     }
                 } else {
                     $Auth->Custom('认证错误');

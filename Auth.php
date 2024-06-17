@@ -104,17 +104,24 @@ class Auth
                 return false;
             }
             // 通过SecretID,SecretKey获取数据
-            $SQL = "SELECT * FROM APPs WHERE SecretID = '$SecretID' AND SecretKey = '$SecretKey'";
-            $Result = $MySQL->query($SQL);
+            $SQL = 'SELECT * FROM APPs WHERE SecretID = ? AND SecretKey = ?';
+            $STMT = $MySQL->prepare($SQL);
+            $STMT->bind_param('ss', $SecretID, $SecretKey);
+            $STMT->execute();
+            $Result = $STMT->get_result();
+            $STMT->close();
             // 数据不存在
-            echo $Result->num_rows;
             if ($Result && $Result->num_rows <= 0) {
                 return false;
             }
             $APPRow = $Result->fetch_assoc();
             // 通过UserID获取数据
-            $SQL = "SELECT * FROM Users WHERE UserID = '$APPRow[UserID]'";
-            $Result = $MySQL->query($SQL);
+            $SQL = 'SELECT * FROM Users WHERE UserID = ?';
+            $STMT = $MySQL->prepare($SQL);
+            $STMT->bind_param('s', $APPRow['UserID']);
+            $STMT->execute();
+            $Result = $STMT->get_result();
+            $STMT->close();
             // 数据不存在
             if ($Result && $Result->num_rows < 0) {
                 return false;

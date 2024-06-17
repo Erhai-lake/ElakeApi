@@ -11,8 +11,12 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
     if ($MySQL !== null) {
-        $SQL = "SELECT APPID, UserID FROM APPs WHERE UserID = '$APPRow[UserID]'";
-        $Result = $MySQL->query($SQL);
+        $SQL = 'SELECT APPID, UserID FROM APPs WHERE UserID = ?';
+        $STMT = $MySQL->prepare($SQL);
+        $STMT->bind_param('s', $APPRow['UserID']);
+        $STMT->execute();
+        $Result = $STMT->get_result();
+        $STMT->close();
         $KeyNum = $Result->num_rows;
         if ($KeyNum < $UserRow['LimitAPP']) {
             $SecretID = UUID4();
