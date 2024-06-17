@@ -16,6 +16,7 @@ $Response = [
     'Tips' => 'API接口由洱海工作室(https://www.elake.top)免费提供',
     'Timestamp' => time()
 ];
+$Authenticat = null;
 $MySQL = null;
 $Redis = null;
 $APPRow = null;
@@ -53,7 +54,7 @@ class Auth
     // 身份验证
     public function Authenticate(bool $AuthenticateSwitch = false): bool
     {
-        global $MySQL, $Redis, $APPRow, $UserRow;
+        global $MySQL, $Redis, $Authenticat, $APPRow, $UserRow;
         // 数据库连接失败
         if ($MySQL === null) {
             return false;
@@ -106,7 +107,8 @@ class Auth
             $SQL = "SELECT * FROM APPs WHERE SecretID = '$SecretID' AND SecretKey = '$SecretKey'";
             $Result = $MySQL->query($SQL);
             // 数据不存在
-            if ($Result && $Result->num_rows < 0) {
+            echo $Result->num_rows;
+            if ($Result && $Result->num_rows <= 0) {
                 return false;
             }
             $APPRow = $Result->fetch_assoc();
@@ -329,7 +331,7 @@ class Auth
         $Response['Code'] = 5;
         $Response['Message'] = $Message;
         if ($MySQL !== null) {
-            $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数缺失');
+            $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], $Message);
         }
     }
 
