@@ -17,7 +17,7 @@ if ($Auth->Authenticate()) {
   // SMTP密码
   $Password = (string)$Auth->StringParameters('Password');
   // SMTP端口
-  $Port = (int)$Auth->IntParameters('Port', 587);
+  $Port = (int)$Auth->IntParameters('Port');
   // 发信人邮箱地址
   $SenderEmail = (string)$Auth->StringParameters('SenderEmail');
   // 发信人名称
