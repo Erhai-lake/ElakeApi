@@ -9,19 +9,19 @@ use PHPMailer\PHPMailer\Exception;
 
 if ($Auth->Authenticate()) {
   // SMTP服务器
-  $Host = (string)$Auth->StringParameters('Host', 'smtp.qiye.163.com');
+  $Host = (string)$Auth->StringParameters('Host');
   // SMTP身份验证
   $SMTPAuth = (int)$Auth->RangeIntParameters('SMTPAuth', 1, 2, 1);
   // SMTP用户名
-  $Name = (string)$Auth->StringParameters('Name', $_ENV['MailBox']);
+  $Name = (string)$Auth->StringParameters('Name');
   // SMTP密码
-  $Password = (string)$Auth->StringParameters('Password', $_ENV['MailBoxPassword']);
+  $Password = (string)$Auth->StringParameters('Password');
   // SMTP端口
   $Port = (int)$Auth->IntParameters('Port', 587);
   // 发信人邮箱地址
-  $SenderEmail = (string)$Auth->StringParameters('SenderEmail', $_ENV['MailBox']);
+  $SenderEmail = (string)$Auth->StringParameters('SenderEmail');
   // 发信人名称
-  $SenderName = (string)$Auth->StringParameters('SenderName', '洱海工作室');
+  $SenderName = (string)$Auth->StringParameters('SenderName');
   // 收信人邮箱地址
   $ReceiversEmail = (string)$Auth->StringParameters('ReceiversEmail');
   // 收信人名称
