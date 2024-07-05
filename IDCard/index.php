@@ -1,5 +1,5 @@
 <?php
-// 身份证查询
+// 身份证信息查询
 require_once $_SERVER['DOCUMENT_ROOT'] . '/Auth.php';
 $Auth = new Auth();
 $Auth->Initialization();
