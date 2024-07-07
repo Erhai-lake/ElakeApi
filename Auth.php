@@ -398,7 +398,7 @@ class Auth
     {
         if ($MySQL !== null) {
             $IP = $_SERVER['REMOTE_ADDR'];
-            $CurrentURL = $this->CurrentURL() . $_SERVER['REQUEST_URI'];
+            $CurrentURL = explode('?', $this->CurrentURL() . $_SERVER['REQUEST_URI'])[0];
             $SQL = 'INSERT INTO APILog (APPID, UserID, IP, DateTime, Message, Url) VALUES (?, ?, ?, ?, ?, ?)';
             $STMT = $MySQL->prepare($SQL);
             $STMT->bind_param('ssssss', $APPID, $UserID, $IP, date('Y-m-d H:i:s'), $Message, $CurrentURL);
