@@ -33,7 +33,7 @@ if ($ValidRequest) {
             'WordsNum' => $Item['words_num'],
             'Description' => $Item['intro'],
             'Url' => $Item['book_url'],
-            'Cover' => $Item['image_link'],
+            'Cover' => $Item['image_link']
         ];
     }
     $Response['Data'] = $Data;
