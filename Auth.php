@@ -28,13 +28,21 @@ class Auth
     public function Initialization(): void
     {
         global $Code, $ValidRequest, $Response, $MySQL, $Redis;
-        $CodeArray = $Code['1'];
-        $Response['Code'] = 1;
-        $Response['Message'] = $CodeArray['Message'];
-        $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['Code']);
-        $MySQL = $this->DatabaseEstablishesConnection();
-        $Redis = $this->CacheEstablishesConnection();
+        if ($_ENV['DeBUG'] === 'true') {
+            $CodeArray = $Code['7'];
+            $Response['Code'] = 7;
+            $Response['Message'] = $CodeArray['Message'];
+            $ValidRequest = $CodeArray['ValidRequest'];
+            http_response_code($CodeArray['Code']);
+        } else {
+            $CodeArray = $Code['1'];
+            $Response['Code'] = 1;
+            $Response['Message'] = $CodeArray['Message'];
+            $ValidRequest = $CodeArray['ValidRequest'];
+            http_response_code($CodeArray['Code']);
+            $MySQL = $this->DatabaseEstablishesConnection();
+            $Redis = $this->CacheEstablishesConnection();
+        }
     }
 
     // 结束
