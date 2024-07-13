@@ -3,14 +3,14 @@ window.onload = () => {
     const PASSWORDPARAMS = new URLSearchParams(window.location.search).get('Password')
     const DOWNLOAD = document.querySelector('.Download')
     if (URLPARAMS == null) {
-        window.location.href = '/'
+        window.location.href = 'https://api.elake.top/ZipBrowse'
     }
     fetch(`https://api.elake.top/ZipBrowse/ZipJson.php?Url=${URLPARAMS}&Password=${PASSWORDPARAMS}`)
         .then(response => response.json())
         .then(Data => {
             if (Data.Code !== 0) {
                 alert(Data.Message)
-                window.location.href = '/'
+                window.location.href = 'https://api.elake.top/ZipBrowse'
             }
             document.querySelector('.Dir').appendChild(GenerateUlList(Data.Data))
             DOWNLOAD.addEventListener('click', () => {
