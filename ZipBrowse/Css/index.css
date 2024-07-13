@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Main {
+    width: 80%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgba(121, 121, 121, 0.3);
+    backdrop-filter: blur(14.5px);
+    border: 0px solid rgba(255, 255, 255, 0.18);
+    box-shadow: rgba(142, 142, 142, 0.19) 0px 6px 15px 0px;
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.898);
+}
+
+.Main h1 {
+    text-align: center;
+}
+
+.Main p {
+    margin: 10px 0;
+    text-align: center;
+    overflow: hidden;
+}
+
+.Main input {
+    outline: none;
+    margin: 10px 0;
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    background-color: transparent;
+    border: #e61d39 3px solid;
+    border-radius: 10px;
+}
+
+.Main div {
+    padding: 5px 30px;
+    margin: 0 auto;
+    width: 50px;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    background-color: rgb(103, 194, 58);
+    color: white;
+    border: rgb(103, 194, 58) 1px solid;
+}
+
+.Main div:hover {
+    background-color: rgba(103, 194, 58, 0.6);
+    border: 1px solid rgba(103, 194, 58, 0.6);
+}
+
+.Main div:active {
+    background-color: rgb(83, 164, 18);
+    border: 1px solid rgb(83, 164, 18);
+}
