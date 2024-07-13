@@ -9,6 +9,6 @@ window.onload = () => {
         Url.innerText = URLPARAMS
     }
     OPEN.addEventListener('click', () => {
-        window.location.href = `../zip.html?Url=${URLPARAMS}&Password=${PASSWORD.value}`
+        window.location.href = `https://api.elake.top/ZipBrowse/zip.html?Url=${URLPARAMS}&Password=${PASSWORD.value}`
     })
 }
