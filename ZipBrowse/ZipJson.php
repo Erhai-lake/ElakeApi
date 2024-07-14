@@ -11,10 +11,6 @@ if (!isset($_GET['Url']) && empty($_GET['Url'])) {
     $Response['Code'] = 1;
     $Response['Message'] = 'zip链接为空';
 } else {
-    $Dir = 'cache/Downloaded/';
-    if (!is_dir($Dir)) {
-        mkdir($Dir, 0777, true);
-    }
     // 下载zip
     $Curl = curl_init();
     curl_setopt($Curl, CURLOPT_URL, $_GET['Url']);
@@ -46,11 +42,6 @@ if (!isset($_GET['Url']) && empty($_GET['Url'])) {
 }
 
 if ($ValidRequest) {
-    // 创建缓存文件夹
-    $CacheDir = 'cache/' . uniqid();
-    if (is_dir($CacheDir)) {
-        mkdir($CacheDir);
-    }
     // 解压zip
     $Zip->extractTo($CacheDir);
     // 关闭zip
