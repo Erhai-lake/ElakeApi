@@ -32,14 +32,9 @@ if (!isset($_GET['Url']) && empty($_GET['Url'])) {
         // 打开zip
         $Zip = new ZipArchive;
         if ($Zip->open($DownloadedPath) === true) {
-            // 如果有密码,验证密码
-            if (!isset($_GET['Password']) && empty($_GET['Password'])) {
-                $ValidRequest = true;
-            } else {
-                if ($Zip->setPassword($_GET['Password']) !== false) {
-                    $ValidRequest = true;
-                }
-            }
+            // 验证密码
+            $Zip->setPassword($_GET['Password']);
+            $ValidRequest = true;
         } else {
             $Response['Code'] = 2;
             $Response['Message'] = 'zip文件异常';
