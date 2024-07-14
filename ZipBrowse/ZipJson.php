@@ -7,41 +7,55 @@ $Response = [
 ];
 $ValidRequest = false;
 
-if (!isset($_GET['Url']) && empty($_GET['Url'])) {
-    $Response['Code'] = 1;
-    $Response['Message'] = 'zip链接为空';
+if (!isset($_GET['Url']) || empty($_GET['Url'])) {
+    $Response['Message'] = '压缩包链接为空';
 } else {
-    // 下载zip
+    // 获取压缩包大小
     $Curl = curl_init();
     curl_setopt($Curl, CURLOPT_URL, $_GET['Url']);
     curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-    $FileName = basename(parse_url($_GET['Url'], PHP_URL_PATH));
-    $DownloadedPath = 'cache/Downloaded/' . $FileName;
-    $File = fopen($DownloadedPath, 'w');
-    curl_setopt($Curl, CURLOPT_FILE, $File);
-    $DownloadResult = curl_exec($Curl);
+    curl_setopt($Curl, CURLOPT_NOBODY, true);
+    curl_exec($Curl);
+    $FileSize = curl_getinfo($Curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
     curl_close($Curl);
-    fclose($File);
-    if ($DownloadResult) {
-        // 打开zip
-        $Zip = new ZipArchive;
-        if ($Zip->open($DownloadedPath) === true) {
-            // 验证密码
-            $Zip->setPassword($_GET['Password']);
-            $ValidRequest = true;
-        } else {
-            $Response['Code'] = 2;
-            $Response['Message'] = 'zip文件异常';
-        }
+    if ($FileSize > 2 * 1024 * 1024 * 1024) {
+        $Response['Message'] = '无法加载大小超过2个G的压缩包';
     } else {
-        $Response['Code'] = 2;
-        $Response['Message'] = 'zip获取失败';
+        // 下载zip
+        $Curl = curl_init();
+        curl_setopt($Curl, CURLOPT_URL, $_GET['Url']);
+        curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
+        $FileName = basename(parse_url($_GET['Url'], PHP_URL_PATH));
+        $DownloadedPath = 'cache/Downloaded/' . $FileName;
+        $File = fopen($DownloadedPath, 'w');
+        curl_setopt($Curl, CURLOPT_FILE, $File);
+        $DownloadResult = curl_exec($Curl);
+        curl_close($Curl);
+        fclose($File);
+        if ($DownloadResult) {
+            // 打开zip
+            $Zip = new ZipArchive;
+            if ($Zip->open($DownloadedPath) === true) {
+                // 验证密码
+                $Zip->setPassword($_GET['Password']);
+                $ValidRequest = true;
+            } else {
+                $Response['Message'] = '压缩包文件异常';
+            }
+        } else {
+            $Response['Message'] = '压缩包获取失败';
+        }
     }
 }
 
 if ($ValidRequest) {
+    // 创建缓存文件夹
+    $CacheDir = 'cache/' . uniqid();
+    mkdir($CacheDir);
     // 解压zip
     $Zip->extractTo($CacheDir);
     // 关闭zip

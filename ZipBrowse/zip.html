@@ -10,9 +10,18 @@
 </head>
 
 <body>
+    <div class="Loading">
+        <h1>正在加载,请稍后</h1>
+    </div>
     <div class="Dir"></div>
     <div class="Browse">
-        <iframe src="" frameborder="0" id="iframe"></iframe>
+        <h1 class="AllBrowse No">该格式暂不支持浏览</h1>
+        <div class="AllBrowse Img" style="--Url: url()"></div>
+        <audio class="AllBrowse Audio" src="" controls></audio>
+        <video class="AllBrowse Video" src="" controls></video>
+        <pre class="AllBrowse Text"></pre>
+        <iframe class="AllBrowse Html" src="" frameborder="0"></iframe>
+    </div>
     </div>
     <div class="Controls">
         <div class="Download">下载</div>
@@ -20,4 +29,3 @@
 </body>
 
 </html>
-

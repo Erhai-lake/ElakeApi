@@ -12,6 +12,20 @@ body {
     user-select: none;
 }
 
+.Loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #80ceff;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
 .Dir {
     grid-area: 1 / 1 / 3 / 2;
     padding-top: 20px;
@@ -36,13 +50,58 @@ body {
 }
 
 .Browse {
+    position: relative;
     grid-area: 1 / 2 / 2 / 3;
     background-color: #ff80808b;
+    user-select: text;
+    overflow: hidden;
 }
 
-.Browse iframe {
+.Browse .AllBrowse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+    overflow: auto;
+    display: none;
+}
+
+.Browse .No {
+    display: none;
+}
+
+.Browse .Img {
     width: 100%;
     height: 100%;
+    object-fit: contain;
+    background-image: var(--Url);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: none;
+}
+
+.Browse .Audio {
+    display: none;
+}
+
+.Browse .Video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+}
+
+.Browse .Text {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.Browse .Html {
+    width: 100%;
+    height: 100%;
+    display: none;
 }
 
 .Controls {
