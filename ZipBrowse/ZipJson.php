@@ -30,7 +30,7 @@ if (!isset($_GET['Url']) || empty($_GET['Url'])) {
         curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
         $FileName = basename(parse_url($_GET['Url'], PHP_URL_PATH));
-        $DownloadedPath = 'cache/Downloaded/' . $FileName;
+        $DownloadedPath = 'cache/' . uniqid();
         $File = fopen($DownloadedPath, 'w');
         curl_setopt($Curl, CURLOPT_FILE, $File);
         $DownloadResult = curl_exec($Curl);
@@ -60,6 +60,8 @@ if ($ValidRequest) {
     $Zip->extractTo($CacheDir);
     // 关闭zip
     $Zip->close();
+    // 删除zip
+    unlink($DownloadedPath);
     // 构造zip结构
     $Data = Open($CacheDir);
     if (!empty($Data)) {
