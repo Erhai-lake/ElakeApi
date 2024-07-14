@@ -57,10 +57,9 @@ if ($ValidRequest) {
     $Zip->close();
     // 构造zip结构
     $Data = Open($CacheDir);
-    if (empty($Data)) {
+    if (!empty($Data)) {
         $Response['Code'] = 0;
         $Response['Message'] = '正常';
-    } else {
         $Response['Data'] = $Data;
     }
 }
