@@ -157,6 +157,31 @@ function OpenFile(Del) {
                 })
                 .catch(console.error)
             break
+        // Microsoft
+        case 'doc':
+        case 'docx':
+        case 'xls':
+        case 'xlsx':
+        case 'ppt':
+        case 'pptx':
+            HTML.src = `https://view.officeapps.live.com/op/view.aspx?src=${URL}`
+            HTML.style.display = 'block'
+            break
+        // pdf
+        case 'pdf':
+            HTML.src = `https://alist-org.github.io/pdf.js/web/viewer.html?file=${URL}`
+            HTML.style.display = 'block'
+            break
+        // epub
+        case 'epub':
+            HTML.src = `https://alist-org.github.io/static/epub.js/viewer.html?url=${URL}`
+            HTML.style.display = 'block'
+            break
+        // zip
+        case 'zip':
+            HTML.src = `${HOST}ZipBrowse?Url=${URL}`
+            HTML.style.display = 'block'
+            break
         // 不支持
         default:
             NO.style.display = 'block'
