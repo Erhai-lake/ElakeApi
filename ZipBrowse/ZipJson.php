@@ -1,8 +1,8 @@
 <?php
 // 构造返回
 $Response = [
-    'Code' => 0,
-    'Message' => '',
+    'Code' => -1,
+    'Message' => '未知错误,请联系管理员',
     'Data' => []
 ];
 $ValidRequest = false;
@@ -57,7 +57,12 @@ if ($ValidRequest) {
     $Zip->close();
     // 构造zip结构
     $Data = Open($CacheDir);
-    $Response['Data'] = $Data;
+    if (empty($Data)) {
+        $Response['Code'] = 0;
+        $Response['Message'] = '正常';
+    } else {
+        $Response['Data'] = $Data;
+    }
 }
 
 header('Content-Type: application/json');
