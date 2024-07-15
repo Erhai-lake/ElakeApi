@@ -1,14 +1,15 @@
 const HOST = `${window.location.protocol}//${window.location.hostname}${(window.location.port ? ':' + window.location.port : '')}/`
 window.onload = () => {
-    const LOADING = document.querySelector('.Loading')
+    // 获取参数
     const URLPARAMS = new URLSearchParams(window.location.search).get('Url')
     const PASSWORDPARAMS = new URLSearchParams(window.location.search).get('Password')
-    const DOWNLOAD = document.querySelector('.Download')
     if (URLPARAMS === null || URLPARAMS === '') {
         alert('压缩包链接为空')
         window.location.href = `${HOST}ZipBrowse`
         return
     }
+    // 请求API
+    const LOADING = document.querySelector('.Loading')
     LOADING.style.display = 'flex'
     fetch(`${HOST}ZipBrowse/ZipJson.php?Url=${URLPARAMS}&Password=${PASSWORDPARAMS}`)
         .then(response => response.json())
@@ -20,6 +21,8 @@ window.onload = () => {
             }
             document.querySelector('.Dir').appendChild(GenerateUlList(Data.Data))
             LOADING.style.display = 'none'
+            // 点击下载
+            const DOWNLOAD = document.querySelector('.Download')
             DOWNLOAD.addEventListener('click', () => {
                 const LINK = document.createElement('a')
                 LINK.href = DOWNLOAD.getAttribute('Download')
@@ -28,10 +31,25 @@ window.onload = () => {
                 LINK.click();
                 document.body.removeChild(LINK);
             })
+
+            // 收缩目录
+            const SHRINKAGE = document.querySelector('.Shrinkage')
+            SHRINKAGE.addEventListener('click', () => {
+                if(document.body.style.gridTemplateColumns === '0px 1fr') {
+                    document.body.style.gridTemplateColumns = '250px 1fr'
+                    document.body.style.gridTemplateRows = '1fr 100px'
+                    SHRINKAGE.textContent = '<'
+                } else {
+                    document.body.style.gridTemplateColumns = '0 1fr'
+                    document.body.style.gridTemplateRows = '1fr 0'
+                    SHRINKAGE.textContent = '>'
+                }
+            })
         })
         .catch(console.error)
 }
 
+// 构建列表
 function GenerateUlList(Data) {
     let Ul = document.createElement('ul')
     Data.Children.forEach(Child => {
@@ -77,6 +95,7 @@ function GenerateUlList(Data) {
     return Ul
 }
 
+// 点击文件
 function OpenFile(Del) {
     // 获取链接和文件后缀
     const URL = `${HOST}ZipBrowse/${Del}`

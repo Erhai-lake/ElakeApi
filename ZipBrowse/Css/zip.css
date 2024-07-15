@@ -10,7 +10,8 @@ body {
     grid-template-columns: 250px 1fr;
     grid-template-rows: 1fr 100px;
     user-select: none;
-    overflow: hidden
+    overflow: hidden;
+    transition: all 0.15s;
 }
 
 .Loading {
@@ -137,4 +138,20 @@ body {
 .Controls .Download:active {
     background-color: #53a412;
     border: 1px solid #53a412;
+}
+
+.Shrinkage{
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 26px;
+    font-weight: bold;
+    background-color: #fff799;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
