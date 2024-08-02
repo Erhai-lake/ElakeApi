@@ -1,6 +1,6 @@
 <?php
 // 用户验证
-// error_reporting(0);
+error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
@@ -30,17 +30,17 @@ class Auth
     {
         global $Code, $ValidRequest, $Response, $MySQL, $Redis;
         if ($_ENV['DeBUG'] === 'true') {
-            $CodeArray = $Code['7'];
-            $Response['Code'] = 7;
+            $CodeArray = $Code[7];
+            $Response['Code'] = $CodeArray['Code'];
             $Response['Message'] = $CodeArray['Message'];
             $ValidRequest = $CodeArray['ValidRequest'];
-            http_response_code($CodeArray['Code']);
+            http_response_code($CodeArray['HttpCode']);
         } else {
-            $CodeArray = $Code['1'];
-            $Response['Code'] = 1;
+            $CodeArray = $Code[1];
+            $Response['Code'] = $CodeArray['Code'];
             $Response['Message'] = $CodeArray['Message'];
             $ValidRequest = $CodeArray['ValidRequest'];
-            http_response_code($CodeArray['Code']);
+            http_response_code($CodeArray['HttpCode']);
             $MySQL = $this->DatabaseEstablishesConnection();
             $Redis = $this->CacheEstablishesConnection();
         }
@@ -300,11 +300,11 @@ class Auth
     public function Normal(): void
     {
         global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
-        $CodeArray = $Code['0'];
-        $Response['Code'] = 0;
+        $CodeArray = $Code[0];
+        $Response['Code'] = $CodeArray['Code'];
         $Response['Message'] = $CodeArray['Message'];
         $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['Code']);
+        http_response_code($CodeArray['HttpCode']);
         if ($MySQL !== null) {
             $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '成功');
         }
@@ -314,11 +314,11 @@ class Auth
     public function Missing(): void
     {
         global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
-        $CodeArray = $Code['2'];
-        $Response['Code'] = 2;
+        $CodeArray = $Code[2];
+        $Response['Code'] = $CodeArray['Code'];
         $Response['Message'] = $CodeArray['Message'];
         $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['Code']);
+        http_response_code($CodeArray['HttpCode']);
         if ($MySQL !== null) {
             $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数缺失');
         }
@@ -330,22 +330,23 @@ class Auth
         global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
         if ($MySQL !== null) {
             $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数异常');
-            $CodeArray = $Code['3'];
-            $Response['Code'] = 3;
+            $CodeArray = $Code[3];
+            $Response['Code'] = $CodeArray['Code'];
             $Response['Message'] = $CodeArray['Message'];
             $ValidRequest = $CodeArray['ValidRequest'];
-            http_response_code($CodeArray['Code']);
+            http_response_code($CodeArray['HttpCode']);
         }
     }
 
     // 自定义200错误消息
     public function Custom(string $Message): void
     {
-        global $ValidRequest, $Response, $MySQL, $APPRow;
-        http_response_code(200);
-        $ValidRequest = false;
-        $Response['Code'] = 5;
+        global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
+        $CodeArray = $Code[6];
+        $Response['Code'] = $CodeArray['Code'];
         $Response['Message'] = $Message;
+        $ValidRequest = $CodeArray['ValidRequest'];
+        http_response_code($CodeArray['HttpCode']);
         if ($MySQL !== null) {
             $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], $Message);
         }
@@ -355,11 +356,11 @@ class Auth
     public function ThirdParty(): void
     {
         global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
-        $CodeArray = $Code['6'];
-        $Response['Code'] = 6;
+        $CodeArray = $Code[5];
+        $Response['Code'] = $CodeArray['Code'];
         $Response['Message'] = $CodeArray['Message'];
         $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['Code']);
+        http_response_code($CodeArray['HttpCode']);
         if ($MySQL !== null) {
             $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数缺失');
         }
@@ -375,11 +376,11 @@ class Auth
                 return $MySQL;
             }
         }
-        $CodeArray = $Code['4'];
-        $Response['Code'] = 4;
+        $CodeArray = $Code[4];
+        $Response['Code'] = $CodeArray['Code'];
         $Response['Message'] = $CodeArray['Message'];
         $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['Code']);
+        http_response_code($CodeArray['HttpCode']);
         return null;
     }
 
@@ -394,11 +395,11 @@ class Auth
                 return $Redis;
             }
         }
-        $CodeArray = $Code['4'];
-        $Response['Code'] = 4;
+        $CodeArray = $Code[4];
+        $Response['Code'] = $CodeArray['Code'];
         $Response['Message'] = $CodeArray['Message'];
         $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['Code']);
+        http_response_code($CodeArray['HttpCode']);
         return null;
     }
 
