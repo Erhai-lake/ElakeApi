@@ -11,7 +11,7 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
     if ($MySQL !== null) {
-        $SecretKey = UUID5(UUID4());
+        $SecretKey = NewSecretKey($Authenticat['SecretID']);
         $SQL = 'UPDATE APPs SET SecretKey = ? WHERE SecretID = ? AND SecretKey = ?';
         $STMT = $MySQL->prepare($SQL);
         $STMT->bind_param('sss', $SecretKey, $Authenticat['SecretID'], $Authenticat['SecretKey']);
@@ -26,16 +26,11 @@ $Auth->End();
 header('Content-Type: application/json');
 echo json_encode($Response);
 
-function UUID4(): string
+function NewSecretKey(String $Value): string
 {
-    $UUID = Uuid::uuid4();
-    $UUIDString = strtoupper($UUID->toString());
-    return $UUIDString;
-}
-
-function UUID5(String $Value): string
-{
-    $UUID = Uuid::uuid5('6ba7b810-9dad-11d1-80b4-00c04fd430c8', $Value);
+    $UUIDv4 = Uuid::uuid4();
+    $UUIDv4String = strtoupper($UUIDv4->toString());
+    $UUID = Uuid::uuid5($Value, $UUIDv4String);
     $UUIDString = strtoupper($UUID->toString());
     return $UUIDString;
 }

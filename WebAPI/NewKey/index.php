@@ -18,8 +18,8 @@ if ($ValidRequest) {
         $Result = $STMT->get_result();
         $STMT->close();
         if ($Result->num_rows < $UserRow['LimitAPP']) {
-            $SecretID = UUID4();
-            $SecretKey = UUID5($SecretID);
+            $SecretID = NewSecretID();
+            $SecretKey = NewSecretKey($SecretID);
             $SQL = 'INSERT INTO APPs (UserID, SecretID, SecretKey, AccessControl, Switch) VALUES (?, ?, ?, 0, 0)';
             $STMT = $MySQL->prepare($SQL);
             $STMT->bind_param('sss', $UserRow['UserID'], $SecretID, $SecretKey);
@@ -40,16 +40,16 @@ $Auth->End();
 header('Content-Type: application/json');
 echo json_encode($Response);
 
-function UUID4(): string
+function NewSecretID(): string
 {
     $UUID = Uuid::uuid4();
     $UUIDString = strtoupper($UUID->toString());
     return $UUIDString;
 }
 
-function UUID5(String $Value): string
+function NewSecretKey(String $Value): string
 {
-    $UUID = Uuid::uuid5('6ba7b810-9dad-11d1-80b4-00c04fd430c8', $Value);
+    $UUID = Uuid::uuid5($Value, NewSecretID());
     $UUIDString = strtoupper($UUID->toString());
     return $UUIDString;
 }
