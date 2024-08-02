@@ -1,6 +1,6 @@
 <?php
 // 用户验证
-error_reporting(0);
+// error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
@@ -370,17 +370,20 @@ class Auth
     private function DatabaseEstablishesConnection(): ?mysqli
     {
         global $Code, $ValidRequest, $Response;
-        $MySQL = new mysqli($_ENV['MySQLHostName'], $_ENV['MySQLUserName'], $_ENV['MySQLPassword'], $_ENV['MySQLDatabase'], $_ENV['MySQLPort']);
-        if (!$MySQL->connect_error) {
-            if ($MySQL->ping()) {
-                return $MySQL;
+        try {
+            $MySQL = new mysqli($_ENV['MySQLHostName'], $_ENV['MySQLUserName'], $_ENV['MySQLPassword'], $_ENV['MySQLDatabase'], $_ENV['MySQLPort']);
+            if (!$MySQL->connect_error) {
+                if ($MySQL->ping()) {
+                    return $MySQL;
+                }
             }
+        } catch (Exception $Error) {
+            $CodeArray = $Code[4];
+            $Response['Code'] = $CodeArray['Code'];
+            $Response['Message'] = $CodeArray['Message'];
+            $ValidRequest = $CodeArray['ValidRequest'];
+            http_response_code($CodeArray['HttpCode']);
         }
-        $CodeArray = $Code[4];
-        $Response['Code'] = $CodeArray['Code'];
-        $Response['Message'] = $CodeArray['Message'];
-        $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['HttpCode']);
         return null;
     }
 
@@ -389,17 +392,20 @@ class Auth
     {
         global $Code, $ValidRequest, $Response;
         $Redis = new Redis();
-        if ($Redis->connect($_ENV['RedisHostName'], $_ENV['RedisHostPort'])) {
-            $Redis->auth($_ENV['RedisPassword']);
-            if ($Redis->ping()) {
-                return $Redis;
+        try {
+            if ($Redis->connect($_ENV['RedisHostName'], $_ENV['RedisHostPort'])) {
+                $Redis->auth($_ENV['RedisPassword']);
+                if ($Redis->ping()) {
+                    return $Redis;
+                }
             }
+        } catch (Exception $Error) {
+            $CodeArray = $Code[4];
+            $Response['Code'] = $CodeArray['Code'];
+            $Response['Message'] = $CodeArray['Message'];
+            $ValidRequest = $CodeArray['ValidRequest'];
+            http_response_code($CodeArray['HttpCode']);
         }
-        $CodeArray = $Code[4];
-        $Response['Code'] = $CodeArray['Code'];
-        $Response['Message'] = $CodeArray['Message'];
-        $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['HttpCode']);
         return null;
     }
 
