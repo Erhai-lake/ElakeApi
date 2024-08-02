@@ -1,6 +1,6 @@
 <?php
 // 用户验证
-error_reporting(0);
+// error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
@@ -75,8 +75,8 @@ class Auth
             $this->Normal();
             return true;
         } else {
-            // Authorization,Bearer不存在
-            if (!isset($_SERVER['HTTP_AUTHORIZATION']) || strpos($_SERVER['HTTP_AUTHORIZATION'], 'Bearer') !== 0) {
+            // User-Agent,Authorization,Bearer不存在
+            if (!isset($_SERVER['HTTP_USER_AGENT']) || !isset($_SERVER['HTTP_AUTHORIZATION']) || strpos($_SERVER['HTTP_AUTHORIZATION'], 'Bearer') !== 0) {
                 return false;
             }
             // 认证数据解析
@@ -406,10 +406,11 @@ class Auth
     {
         if ($MySQL !== null) {
             $IP = $_SERVER['REMOTE_ADDR'];
+            $UserAgent = $_SERVER['HTTP_USER_AGENT'];
             $CurrentURL = explode('?', $this->CurrentURL() . $_SERVER['REQUEST_URI'])[0];
-            $SQL = 'INSERT INTO APILog (APPID, UserID, IP, DateTime, Message, Url) VALUES (?, ?, ?, ?, ?, ?)';
+            $SQL = 'INSERT INTO APILog (APPID, UserID, IP, DateTime, UserAgent, Message, Url) VALUES (?, ?, ?, ?, ?, ?, ?)';
             $STMT = $MySQL->prepare($SQL);
-            $STMT->bind_param('ssssss', $APPID, $UserID, $IP, date('Y-m-d H:i:s'), $Message, $CurrentURL);
+            $STMT->bind_param('sssssss', $APPID, $UserID, $IP, date('Y-m-d H:i:s'), $UserAgent, $Message, $CurrentURL);
             $STMT->execute();
             $STMT->close();
         }
