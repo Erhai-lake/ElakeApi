@@ -14,6 +14,7 @@ $Response = [
     'Message' => '',
     'Data' => [],
     'Tips' => 'API接口由洱海工作室(https://www.elake.top)免费提供',
+    'Version' => $_ENV['Version'],
     'Timestamp' => time()
 ];
 $Authenticat = null;
