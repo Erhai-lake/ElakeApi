@@ -1,14 +1,14 @@
 <?php
 // 用户验证
-// error_reporting(0);
+error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 $Dotenv = Dotenv\Dotenv::createImmutable(str_replace('/index', '', str_replace('\index', '', __DIR__)));
 $Dotenv->load();
 
-$Code  = json_decode(file_get_contents(str_replace('/index', '/', str_replace('\index', '\\', __DIR__)) . 'Code.json'), true);
-$ValidRequest  = null;
+$Code = json_decode(file_get_contents(str_replace('/index', '/', str_replace('\index', '\\', __DIR__)) . 'Code.json'), true);
+$ValidRequest = null;
 $Response = [
     'Code' => 0,
     'Message' => '',
