@@ -14,7 +14,7 @@ if ($Auth->Authenticate()) {
 if ($ValidRequest) {
   if ($Type === 1) {
     header('Content-Type: PNG');
-    echo $Auth->Curl('https://qlogo4.store.qq.com/qzone/' . $QQ . '/' . $QQ . '/100');
+    echo $Auth->Curl('GET', 'https://qlogo4.store.qq.com/qzone/' . $QQ . '/' . $QQ . '/100');
     exit();
   } else {
     $Response['Data'] = 'https://qlogo4.store.qq.com/qzone/' . $QQ . '/' . $QQ . '/100';

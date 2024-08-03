@@ -8,7 +8,7 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-    $Json = json_decode($Auth->Curl('https://weibo.com/ajax/side/hotSearch'), true)['data'];
+    $Json = json_decode($Auth->Curl('GET', 'https://weibo.com/ajax/side/hotSearch'), true)['data'];
     $Data = [];
     foreach ($Json['hotgovs'] as $Item) {
         $Data[] = [

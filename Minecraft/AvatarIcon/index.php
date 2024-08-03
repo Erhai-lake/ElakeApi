@@ -19,8 +19,8 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
   // 第一步: 载入皮肤
-  $UUID = json_decode($Auth->Curl('https://api.mojang.com/users/profiles/minecraft/' . $Name), true)['id'];
-  $Skin = $Auth->Curl(json_decode(base64_decode(json_decode($Auth->Curl('https://sessionserver.mojang.com/session/minecraft/profile/' . $UUID), true)['properties'][0]['value']), true)['textures']['SKIN']['url']);
+  $UUID = json_decode($Auth->Curl('GET', 'https://api.mojang.com/users/profiles/minecraft/' . $Name), true)['id'];
+  $Skin = $Auth->Curl('GET', json_decode(base64_decode(json_decode($Auth->Curl('GET', 'https://sessionserver.mojang.com/session/minecraft/profile/' . $UUID), true)['properties'][0]['value']), true)['textures']['SKIN']['url']);
   $Image = imagecreatefromstring($Skin);
   if (imagesx($Image) != 64 || imagesy($Image) != 64) {
     imagedestroy($Image);

@@ -28,7 +28,7 @@ if ($ValidRequest) {
                 $Header = [
                     'Accept: application/json'
                 ];
-                $Token = json_decode($Auth->CurlPOST('https://github.com/login/oauth/access_token', $Parameters, $Header), true)['access_token'];
+                $Token = json_decode($Auth->Curl('POST', 'https://github.com/login/oauth/access_token', $Parameters, $Header), true)['access_token'];
                 if (!empty($Token)) {
                     // 获取GitHub用户信息
                     $Header = [
@@ -36,7 +36,7 @@ if ($ValidRequest) {
                         'User-Agent: ElakeAPI',
                         'Authorization: token ' . $Token
                     ];
-                    $Json = json_decode($Auth->Curl('https://api.github.com/user', [], $Header), true);
+                    $Json = json_decode($Auth->Curl('GET', 'https://api.github.com/user', [], $Header), true);
                     $GitHubID = $Json['id'];
                     $GitHubName = $Json['login'];
                     $IP = $_SERVER['REMOTE_ADDR'];

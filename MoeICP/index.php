@@ -14,7 +14,7 @@ if ($ValidRequest) {
     'keyword' => $ICP
   ];
   $Pattern = '/<div class="value">(.*?)<\/div>/s';
-  preg_match_all($Pattern, $Auth->Curl('https://icp.gov.moe/', $Parameters), $Matches);
+  preg_match_all($Pattern, $Auth->Curl('GET', 'https://icp.gov.moe/', $Parameters), $Matches);
   $Name = isset($Matches[1][0]) ? $Matches[1][0] : "无";
   $Domain = isset($Matches[1][1]) ? $Matches[1][1] : "无";
   $Info = isset($Matches[1][3]) ? $Matches[1][3] : "无";

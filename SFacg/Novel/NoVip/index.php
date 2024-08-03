@@ -15,7 +15,7 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
   $Pattern = '/<div class="article-content font16" id="ChapterBody" data-class="font16">.\s*(.*?)<\/div>/s';
-  preg_match_all($Pattern, $Auth->Curl('https://book.sfacg.com/Novel/' . $NovelID . '/' . $ReelID . '/' . $ChaptersID), $Matches);
+  preg_match_all($Pattern, $Auth->Curl('GET', 'https://book.sfacg.com/Novel/' . $NovelID . '/' . $ReelID . '/' . $ChaptersID), $Matches);
   $Pattern2 = '/<p>(.*?)<\/p>/s';
   preg_match_all($Pattern2, $Matches[1][0], $NovelMatches);
   $Response['Data'] = $NovelMatches[1];

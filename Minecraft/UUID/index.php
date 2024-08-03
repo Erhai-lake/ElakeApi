@@ -10,7 +10,7 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $DataJson = json_decode($Auth->Curl('https://api.mojang.com/users/profiles/minecraft/' . $Name), true)['id'];
+  $DataJson = json_decode($Auth->Curl('GET', 'https://api.mojang.com/users/profiles/minecraft/' . $Name), true)['id'];
   $Response['Data'] = $DataJson;
 }
 

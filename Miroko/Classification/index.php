@@ -17,9 +17,9 @@ if ($ValidRequest) {
     'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
     'Language: zh-CN'
   ];
-  $DataJson = json_decode($Auth->Curl('https://api.miroko.cn/api/anime-new/top-info', $Parameters, $Header), true);
+  $DataJson = json_decode($Auth->Curl('GET', 'https://api.miroko.cn/api/anime-new/top-info', $Parameters, $Header), true);
   if ($DataJson['code'] !== 200001) {
-    $Auth->ThirdParty();
+    $Auth->Return(5);
   } else {
     $Response['Data'] = [
       'Year' => $DataJson['data']['year'],

@@ -12,13 +12,13 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $DataJson = json_decode(base64_decode(json_decode($Auth->Curl('https://sessionserver.mojang.com/session/minecraft/profile/' . $UUID), true)['properties'][0]['value']), true)['textures'];
+  $DataJson = json_decode(base64_decode(json_decode($Auth->Curl('GET', 'https://sessionserver.mojang.com/session/minecraft/profile/' . $UUID), true)['properties'][0]['value']), true)['textures'];
   if ($Type === 1) {
     header('Content-Type: PNG');
-    echo $Auth->Curl($DataJson['CAPE']['url']);
+    echo $Auth->Curl('GET', $DataJson['CAPE']['url']);
     exit();
   } else {
-    $Response['Data'] = 'data:image/png;base64,' . base64_encode($Auth->Curl($DataJson['CAPE']['url']));
+    $Response['Data'] = 'data:image/png;base64,' . base64_encode($Auth->Curl('GET', $DataJson['CAPE']['url']));
   }
 }
 

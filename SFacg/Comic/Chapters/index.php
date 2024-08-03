@@ -11,7 +11,7 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
   $Pattern = '/<div class="comic_Serial_list">(.*?)<\/div>/s';
-  preg_match_all($Pattern, $Auth->Curl('https://manhua.sfacg.com/mh/' . $ID), $ReelMatches);
+  preg_match_all($Pattern, $Auth->Curl('GET', 'https://manhua.sfacg.com/mh/' . $ID), $ReelMatches);
   $Pattern2 = '/<a href="(.*?)" .*?>(.*?)<\/a>/s';
   $Pattern3 = '/<b>VIP<\/b>/s';
   for ($I = 0; $I < count($ReelMatches[0]); $I++) {

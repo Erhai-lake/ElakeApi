@@ -17,7 +17,7 @@ if ($ValidRequest) {
         'page' => $Page
     ];
     $Pattern = '/<ul class="qm-pic-txt pic-150-200".*?>(.*?)<\/ul>/s';
-    preg_match($Pattern, $Auth->Curl('https://www.qimao.com/search/index/', $Parameters), $Matches);
+    preg_match($Pattern, $Auth->Curl('GET', 'https://www.qimao.com/search/index/', $Parameters), $Matches);
     $Pattern = '/<li>.*?<div class="pic">.*?<a href="\/shuku\/(.*?)\/">.*?<img.*?src="(.*?) .*?<div class="txt">.*?<span class="s-tit">.*?<a.*?>(.*?)<\/a>.*?<span class="s-tags qm-tags clearfix".*?<a.*?>(.*?)<\/a>(.*?)\n.*?<\/span>.*?<span class="s-des">        (.*?)<\/span>.*?<p class="p-bottom">.*?<a.*?>(.*?)<\/a>.*?<\/li>/s';
     preg_match_all($Pattern, $Matches[0], $MatchesItem);
     for ($I = 0; $I < count($MatchesItem[0]); $I++) {

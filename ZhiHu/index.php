@@ -8,7 +8,7 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-    $Json = json_decode($Auth->Curl('https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total'), true)['data'];
+    $Json = json_decode($Auth->Curl('GET', 'https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total'), true)['data'];
     $Data = [];
     foreach ($Json as $Item) {
         $Data[] = [

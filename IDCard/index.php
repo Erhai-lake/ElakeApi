@@ -19,7 +19,7 @@ if ($ValidRequest) {
   }
   $LastChar = $Ai[$Sigma % 11];
   if ($LastChar !== $IDCard[17]) {
-    $Auth->Abnormal();
+    $Auth->Return(3);
   }
   $Response['Data'] = array(
     'Gender' => Gender(),

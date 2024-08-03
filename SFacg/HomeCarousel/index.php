@@ -9,7 +9,7 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
   $Pattern = '/<li>\s*<a\s+href="([^"]+)"[^>]*>\s*<img\s+[^>]*data-original="([^"]+)"[^>]*>\s*<\/a>\s*<\/li>/s';
-  preg_match_all($Pattern, $Auth->Curl('https://book.sfacg.com/'), $Matches, PREG_SET_ORDER);
+  preg_match_all($Pattern, $Auth->Curl('GET', 'https://book.sfacg.com/'), $Matches, PREG_SET_ORDER);
   $Data = [];
   foreach ($Matches as $Item) {
     if (substr($Item[1], 0, 7) === 'http://' || substr($Item[1], 0, 8) === 'https://') {

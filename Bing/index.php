@@ -18,7 +18,7 @@ if ($ValidRequest) {
     'n' => $Limit,
     'mkt' => 'zh-CN'
   ];
-  $BingJson = json_decode($Auth->Curl('https://cn.bing.com/HPImageArchive.aspx', $Parameters), true)['images'];
+  $BingJson = json_decode($Auth->Curl('GET', 'https://cn.bing.com/HPImageArchive.aspx', $Parameters), true)['images'];
   $Data = [];
   foreach ($BingJson as $Item) {
     $Data[] = [

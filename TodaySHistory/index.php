@@ -12,7 +12,7 @@ if ($ValidRequest) {
     'User-Agent: Elake'
   ];
   $Pattern1 = '/<ul id="tohlis">(.*?)<\/ul>/s';
-  preg_match($Pattern1, $Auth->Curl('https://tool.lu/todayonhistory/', [], $Header), $Matches);
+  preg_match($Pattern1, $Auth->Curl('GET', 'https://tool.lu/todayonhistory/', [], $Header), $Matches);
   $Pattern2 = '/<li>(.*?) (.*?)<a .*?>.*?<\/a><\/li>/s';
   preg_match_all($Pattern2, $Matches[1], $MatchesItem);
   $Response['Data'] = $MatchesItem;

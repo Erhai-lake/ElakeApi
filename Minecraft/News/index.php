@@ -17,7 +17,7 @@ if ($ValidRequest) {
   switch ($Type) {
     case 1:
       // Java
-      $DataJson = json_decode($Auth->Curl('https://launchercontent.mojang.com/javaPatchNotes.json'), true)['entries'];
+      $DataJson = json_decode($Auth->Curl('GET', 'https://launchercontent.mojang.com/javaPatchNotes.json'), true)['entries'];
       $Page = ($Page - 1) * $Limit;
       $Limit = $Page + $Limit;
       if ($Limit > count($DataJson)) {
@@ -45,7 +45,7 @@ if ($ValidRequest) {
       break;
     case 2:
       // Bedrock
-      $DataJson = json_decode($Auth->Curl('https://launchercontent.mojang.com/bedrockPatchNotes.json'), true)['entries'];
+      $DataJson = json_decode($Auth->Curl('GET', 'https://launchercontent.mojang.com/bedrockPatchNotes.json'), true)['entries'];
       $Page = ($Page - 1) * $Limit;
       $Limit = $Page + $Limit;
       if ($Limit > count($DataJson)) {
@@ -74,7 +74,7 @@ if ($ValidRequest) {
       break;
     case 3:
       // Dungeons
-      $DataJson = json_decode($Auth->Curl('https://launchercontent.mojang.com/dungeonsPatchNotes.json'), true)['entries'];
+      $DataJson = json_decode($Auth->Curl('GET', 'https://launchercontent.mojang.com/dungeonsPatchNotes.json'), true)['entries'];
       $Page = ($Page - 1) * $Limit;
       $Limit = $Page + $Limit;
       if ($Limit > count($DataJson)) {
@@ -102,7 +102,7 @@ if ($ValidRequest) {
       break;
     case 4:
       // Legends
-      $DataJson = json_decode($Auth->Curl('https://launchercontent.mojang.com/legendsPatchNotes.json'), true)['entries'];
+      $DataJson = json_decode($Auth->Curl('GET', 'https://launchercontent.mojang.com/legendsPatchNotes.json'), true)['entries'];
       $Page = ($Page - 1) * $Limit;
       $Limit = $Page + $Limit;
       if ($Limit > count($DataJson)) {
@@ -131,7 +131,7 @@ if ($ValidRequest) {
       break;
     case 5:
       // MoJang
-      $DataJson = json_decode($Auth->Curl('https://launchercontent.mojang.com/news.json'), true)['entries'];
+      $DataJson = json_decode($Auth->Curl('GET', 'https://launchercontent.mojang.com/news.json'), true)['entries'];
       $Page = ($Page - 1) * $Limit;
       $Limit = $Page + $Limit;
       if ($Limit > count($DataJson)) {

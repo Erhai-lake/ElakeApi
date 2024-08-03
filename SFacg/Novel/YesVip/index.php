@@ -23,7 +23,7 @@ if ($ValidRequest) {
   $Header = [
     'Cookie: .SFCommunity=' . $Community
   ];
-  echo $Auth->Curl('https://book.sfacg.com/ajax/ashx/common.ashx', $Parameters, $Header);
+  echo $Auth->Curl('GET', 'https://book.sfacg.com/ajax/ashx/common.ashx', $Parameters, $Header);
   exit();
 }
 

@@ -12,7 +12,7 @@ if ($ValidRequest) {
         'launcher_id' => 'jGHBHlcOq1',
         'language' => 'zh-cn'
     ];
-    $GamesJson = json_decode($Auth->Curl('https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames', $Parameters), true);
+    $GamesJson = json_decode($Auth->Curl('GET', 'https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames', $Parameters), true);
     $Data = [];
     foreach ($GamesJson['data']['games'] as $Item) {
         $Parameters = [
@@ -20,13 +20,13 @@ if ($ValidRequest) {
             'language' => 'zh-cn',
             'game_id' => $Item['id']
         ];
-        $GameBasicInfoJson = json_decode($Auth->Curl('https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getAllGameBasicInfo', $Parameters), true);
+        $GameBasicInfoJson = json_decode($Auth->Curl('GET', 'https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getAllGameBasicInfo', $Parameters), true);
         $Parameters = [
             'launcher_id' => 'jGHBHlcOq1',
             'language' => 'zh-cn',
             'game_id' => $Item['id']
         ];
-        $GameContentJson = json_decode($Auth->Curl('https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameContent', $Parameters), true);
+        $GameContentJson = json_decode($Auth->Curl('GET', 'https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGameContent', $Parameters), true);
         $GameContentBanners = [];
         foreach ($GameContentJson['data']['content']['banners'] as $GameContentBannersItem) {
             $GameContentBanners[] = [

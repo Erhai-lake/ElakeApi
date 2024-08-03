@@ -22,7 +22,7 @@ if ($ValidRequest) {
         'date_type' => $Date,
         'page' => $Page
     ];
-    $Json = json_decode($Auth->Curl('https://www.qimao.com/api/rank/book-list', $Parameters), true);
+    $Json = json_decode($Auth->Curl('GET', 'https://www.qimao.com/api/rank/book-list', $Parameters), true);
     $Data = [];
     foreach ($Json['data']['table_data'] as $Item) {
         $Data[] = [

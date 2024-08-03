@@ -28,19 +28,11 @@ class Auth
     // 初始化
     public function Initialization(): void
     {
-        global $Code, $ValidRequest, $Response, $MySQL, $Redis;
+        global $MySQL, $Redis;
         if ($_ENV['DeBUG'] === 'true') {
-            $CodeArray = $Code[7];
-            $Response['Code'] = $CodeArray['Code'];
-            $Response['Message'] = $CodeArray['Message'];
-            $ValidRequest = $CodeArray['ValidRequest'];
-            http_response_code($CodeArray['HttpCode']);
+            $this->Return(7);
         } else {
-            $CodeArray = $Code[1];
-            $Response['Code'] = $CodeArray['Code'];
-            $Response['Message'] = $CodeArray['Message'];
-            $ValidRequest = $CodeArray['ValidRequest'];
-            http_response_code($CodeArray['HttpCode']);
+            $this->Return(1);
             $MySQL = $this->DatabaseEstablishesConnection();
             $Redis = $this->CacheEstablishesConnection();
         }
@@ -73,7 +65,7 @@ class Auth
             return false;
         }
         if ($AuthenticateSwitch) {
-            $this->Normal();
+            $this->Return(0);
             return true;
         } else {
             // User-Agent,Authorization,Bearer不存在
@@ -171,7 +163,7 @@ class Auth
             if ($Difference > 60) {
                 return false;
             }
-            $this->Normal();
+            $this->Return(0);
             return true;
         }
     }
@@ -185,7 +177,7 @@ class Auth
             if ($Default !== null) {
                 return (string)$Default;
             } else {
-                $this->Missing();
+                $this->Return(2);
                 return;
             }
         }
@@ -200,7 +192,7 @@ class Auth
             if ($Default !== null) {
                 return (int)$Default;
             } else {
-                $this->Missing();
+                $this->Return(2);
                 return;
             }
         }
@@ -213,7 +205,7 @@ class Auth
         if ($Value <= $Max) {
             return (int)$Value;
         } else {
-            $this->Abnormal();
+            $this->Return(3);
             return;
         }
     }
@@ -225,7 +217,7 @@ class Auth
         if ($Value >= $Min) {
             return (int)$Value;
         } else {
-            $this->Abnormal();
+            $this->Return(3);
             return;
         }
     }
@@ -237,7 +229,7 @@ class Auth
         if ($Value >= $Min && $Value <= $Max) {
             return (int)$Value;
         } else {
-            $this->Abnormal();
+            $this->Return(3);
             return;
         }
     }
@@ -249,11 +241,11 @@ class Auth
             if (in_array($_GET[$Name], $Limit)) {
                 return $_GET[$Name];
             } else {
-                $this->Abnormal();
+                $this->Return(3);
                 return;
             }
         } else {
-            $this->Missing();
+            $this->Return(2);
             return;
         }
     }
@@ -265,11 +257,11 @@ class Auth
             if (!in_array($_GET[$Name], $Limit)) {
                 return $_GET[$Name];
             } else {
-                $this->Abnormal();
+                $this->Return(3);
                 return;
             }
         } else {
-            $this->Missing();
+            $this->Return(2);
             return;
         }
     }
@@ -280,7 +272,7 @@ class Auth
         if (preg_match($PCREP, $Value) == $Bool) {
             return $Value;
         } else {
-            $this->Abnormal();
+            $this->Return(3);
             return;
         }
     }
@@ -291,120 +283,57 @@ class Auth
         if (isset($_COOKIE[$Name]) && !empty($_COOKIE[$Name])) {
             return $_COOKIE[$Name];
         } else {
-            $this->Missing();
+            $this->Return(2);
             return;
         }
     }
 
-    // 正常
-    public function Normal(): void
+    // 返回
+    public function Return(int $ID): void
     {
         global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
-        $CodeArray = $Code[0];
+        $CodeArray = $Code[$ID];
         $Response['Code'] = $CodeArray['Code'];
         $Response['Message'] = $CodeArray['Message'];
         $ValidRequest = $CodeArray['ValidRequest'];
         http_response_code($CodeArray['HttpCode']);
         if ($MySQL !== null) {
-            $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '成功');
-        }
-    }
-
-    // 参数缺失
-    public function Missing(): void
-    {
-        global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
-        $CodeArray = $Code[2];
-        $Response['Code'] = $CodeArray['Code'];
-        $Response['Message'] = $CodeArray['Message'];
-        $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['HttpCode']);
-        if ($MySQL !== null) {
-            $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数缺失');
-        }
-    }
-
-    // 参数异常
-    public function Abnormal(): void
-    {
-        global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
-        if ($MySQL !== null) {
-            $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数异常');
-            $CodeArray = $Code[3];
-            $Response['Code'] = $CodeArray['Code'];
-            $Response['Message'] = $CodeArray['Message'];
-            $ValidRequest = $CodeArray['ValidRequest'];
-            http_response_code($CodeArray['HttpCode']);
+            $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], $CodeArray['Message']);
         }
     }
 
     // 自定义200错误消息
     public function Custom(string $Message): void
     {
-        global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
-        $CodeArray = $Code[6];
-        $Response['Code'] = $CodeArray['Code'];
+        global $Response, $MySQL, $APPRow;
+        $this->Return(6);
         $Response['Message'] = $Message;
-        $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['HttpCode']);
         if ($MySQL !== null) {
             $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], $Message);
-        }
-    }
-
-    // 第三方异常
-    public function ThirdParty(): void
-    {
-        global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
-        $CodeArray = $Code[5];
-        $Response['Code'] = $CodeArray['Code'];
-        $Response['Message'] = $CodeArray['Message'];
-        $ValidRequest = $CodeArray['ValidRequest'];
-        http_response_code($CodeArray['HttpCode']);
-        if ($MySQL !== null) {
-            $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], '参数缺失');
         }
     }
 
     // 数据库建立连接
     private function DatabaseEstablishesConnection(): ?mysqli
     {
-        global $Code, $ValidRequest, $Response;
-        try {
-            $MySQL = new mysqli($_ENV['MySQLHostName'], $_ENV['MySQLUserName'], $_ENV['MySQLPassword'], $_ENV['MySQLDatabase'], $_ENV['MySQLPort']);
-            if (!$MySQL->connect_error) {
-                if ($MySQL->ping()) {
-                    return $MySQL;
-                }
-            }
-        } catch (Exception $Error) {
-            $CodeArray = $Code[4];
-            $Response['Code'] = $CodeArray['Code'];
-            $Response['Message'] = $CodeArray['Message'];
-            $ValidRequest = $CodeArray['ValidRequest'];
-            http_response_code($CodeArray['HttpCode']);
+        $MySQL = new mysqli($_ENV['MySQLHostName'], $_ENV['MySQLUserName'], $_ENV['MySQLPassword'], $_ENV['MySQLDatabase'], $_ENV['MySQLPort']);
+        if (!$MySQL->connect_error) {
+            return $MySQL;
         }
+        $this->Return(4);
         return null;
     }
 
     // 缓存建立连接
     private function CacheEstablishesConnection(): ?redis
     {
-        global $Code, $ValidRequest, $Response;
         $Redis = new Redis();
         try {
-            if ($Redis->connect($_ENV['RedisHostName'], $_ENV['RedisHostPort'])) {
-                $Redis->auth($_ENV['RedisPassword']);
-                if ($Redis->ping()) {
-                    return $Redis;
-                }
-            }
+            $Redis->connect($_ENV['RedisHostName'], $_ENV['RedisHostPort']);
+            $Redis->auth($_ENV['RedisPassword']);
+            return $Redis;
         } catch (Exception $Error) {
-            $CodeArray = $Code[4];
-            $Response['Code'] = $CodeArray['Code'];
-            $Response['Message'] = $CodeArray['Message'];
-            $ValidRequest = $CodeArray['ValidRequest'];
-            http_response_code($CodeArray['HttpCode']);
+            $this->Return(4);
         }
         return null;
     }
@@ -434,43 +363,39 @@ class Auth
     }
 
     // 请求
-    public function Curl(string $Url, array $Parameters = [], array $Header = []): string
+    public function Curl(string $Request, string $Url, array $Parameters = [], array $Header = []): string
     {
         $Curl = curl_init();
-        curl_setopt($Curl, CURLOPT_URL, $Url . '?' . http_build_query($Parameters));
         curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($Curl, CURLOPT_HTTPHEADER, $Header);
+        switch ($Request) {
+            case 'GET':
+                curl_setopt($Curl, CURLOPT_URL, $Url . '?' . http_build_query($Parameters));
+                break;
+            case 'POST':
+                curl_setopt($Curl, CURLOPT_URL, $Url);
+                curl_setopt($Curl, CURLOPT_POST, true);
+                curl_setopt($Curl, CURLOPT_POSTFIELDS, http_build_query($Parameters));
+                break;
+            default:
+                $this->Return(4);
+                break;
+        }
         $Response = curl_exec($Curl);
-        $StatusCode = curl_getinfo($Curl, CURLINFO_HTTP_CODE);
-        curl_close($Curl);
-        if ($StatusCode >= 200 && $StatusCode < 300) {
-            return $Response;
-        } else {
-            $this->ThirdParty();
+        if (curl_errno($Curl)) {
+            $this->Return(curl_error($Curl));
+            curl_close($Curl);
+            $this->Return(5);
             return '';
         }
-    }
-
-    // 请求POST
-    public function CurlPOST(string $Url, array $Parameters = [], array $Header = []): string
-    {
-        $Curl = curl_init();
-        curl_setopt($Curl, CURLOPT_URL, $Url);
-        curl_setopt($Curl, CURLOPT_POST, true);
-        curl_setopt($Curl, CURLOPT_POSTFIELDS, http_build_query($Parameters));
-        curl_setopt($Curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($Curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($Curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($Curl, CURLOPT_HTTPHEADER, $Header);
-        $Response = curl_exec($Curl);
         $StatusCode = curl_getinfo($Curl, CURLINFO_HTTP_CODE);
         curl_close($Curl);
         if ($StatusCode >= 200 && $StatusCode < 300) {
             return $Response;
         } else {
-            $this->ThirdParty();
+            $this->Return(5);
             return '';
         }
     }

@@ -11,7 +11,7 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
   $Pattern = '/<div class="story-catalog">.*?<h3 class="catalog-title">【.*?】 (.*?)<\/h3>.*?<ul class="clearfix">.\s*<li>(.*?)<\/li>.\s*<\/ul>/s';
-  preg_match_all($Pattern, $Auth->Curl('https://book.sfacg.com/Novel/'. $ID . '/MainIndex/'), $ReelMatches);
+  preg_match_all($Pattern, $Auth->Curl('GET', 'https://book.sfacg.com/Novel/'. $ID . '/MainIndex/'), $ReelMatches);
   $Pattern2 = '/<a href="(.*?)" title="(.*?)" .*?>.*?<\/a>/s';
   $Data = [];
   for ($I = 0; $I < count($ReelMatches[0]); $I++) {

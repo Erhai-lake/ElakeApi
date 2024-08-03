@@ -13,7 +13,7 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
     $Pattern = '/<div class="article".*?>(.*?)<\/div>/s';
-    preg_match($Pattern, $Auth->Curl('https://www.qimao.com/shuku/' . $NovelId . '-' . $ChapterId . '/'), $Matches);
+    preg_match($Pattern, $Auth->Curl('GET', 'https://www.qimao.com/shuku/' . $NovelId . '-' . $ChapterId . '/'), $Matches);
     $Pattern = '/<p>(.*?)<\/p>/s';
     preg_match_all($Pattern, $Matches[1], $MatchesItem);
     $Response['Data'] = $MatchesItem[1];

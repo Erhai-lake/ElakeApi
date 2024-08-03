@@ -10,7 +10,7 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-    $Html = $Auth->Curl('https://www.qimao.com/shuku/' . $Id . '/');
+    $Html = $Auth->Curl('GET', 'https://www.qimao.com/shuku/' . $Id . '/');
     $PatternMain = '/<div class="book-information clearfix left".*?>(.*?)<\/div><\/div>/s';
     preg_match($PatternMain, $Html, $MatchesMain);
     $PatternTitle = '/<div class="title clearfix".*?<span class="txt".*?>(.*?)<\/span>/s';
@@ -26,7 +26,7 @@ if ($ValidRequest) {
     $Parameters = [
         'book_id' => $Id
     ];
-    $Json = json_decode($Auth->Curl('https://www.qimao.com/api/book/chapter-list', $Parameters), true);
+    $Json = json_decode($Auth->Curl('GET', 'https://www.qimao.com/api/book/chapter-list', $Parameters), true);
     $Chapter = [];
     foreach ($Json['data']['chapters'] as $Item) {
         $Chapter[] = [

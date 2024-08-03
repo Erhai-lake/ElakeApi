@@ -9,7 +9,7 @@ if ($Auth->Authenticate()) {
 
 if ($ValidRequest) {
     $Pattern = '/<div class="t-info">(.*?)<\/div>/s';
-    preg_match_all($Pattern, $Auth->Curl('https://bbs.hupu.com/all-gambia'), $Matches);
+    preg_match_all($Pattern, $Auth->Curl('GET', 'https://bbs.hupu.com/all-gambia'), $Matches);
     $Data = [];
     $Pattern = '/<a href="(.*?)".*?<span class="t-title">(.*?)<\/span>/s';
     foreach ($Matches[1] as $Item) {

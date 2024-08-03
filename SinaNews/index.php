@@ -18,7 +18,7 @@ if ($ValidRequest) {
     'num' => $Limit,
     'page' => $Page
   ];
-  $NewsJson = json_decode($Auth->Curl('https://feed.mix.sina.com.cn/api/roll/get', $Parameters), true)['result']['data'];
+  $NewsJson = json_decode($Auth->Curl('GET', 'https://feed.mix.sina.com.cn/api/roll/get', $Parameters), true)['result']['data'];
   $News = [];
   foreach ($NewsJson as $Item) {
     $News[] = [
