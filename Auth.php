@@ -316,7 +316,7 @@ class Auth
     // 数据库建立连接
     private function DatabaseEstablishesConnection(): ?mysqli
     {
-        $MySQL = new mysqli($_ENV['MySQLHostName'], $_ENV['MySQLUserName'], $_ENV['MySQLPassword'], $_ENV['MySQLDatabase'], $_ENV['MySQLPort']);
+        $MySQL = new mysqli($_ENV['MySQLHost'], $_ENV['MySQLName'], $_ENV['MySQLPassword'], $_ENV['MySQLDatabase'], $_ENV['MySQLPort']);
         if (!$MySQL->connect_error) {
             return $MySQL;
         }
@@ -329,7 +329,7 @@ class Auth
     {
         $Redis = new Redis();
         try {
-            $Redis->connect($_ENV['RedisHostName'], $_ENV['RedisHostPort']);
+            $Redis->connect($_ENV['RedisHost'], $_ENV['RedisPort']);
             $Redis->auth($_ENV['RedisPassword']);
             return $Redis;
         } catch (Exception $Error) {
