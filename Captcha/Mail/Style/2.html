@@ -2,72 +2,72 @@
 <html lang="zh_CN">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{Platform}}</title>
-  <link rel="shortcut icon" href="{{PlatformLogo}}" type="image/x-icon">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{Platform}}</title>
+    <link rel="shortcut icon" href="{{PlatformLogo}}" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      padding: 10px;
-      background-color: #f2f2f2;
-      font-family: Arial, sans-serif;
-    }
+        body {
+            padding: 10px;
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
 
-    .Container {
-      width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #ffffff;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+        .Container {
+            width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-    hr {
-      margin: 10px 0;
-    }
+        hr {
+            margin: 10px 0;
+        }
 
-    .Red {
-      color: red;
-      font-weight: bold;
-    }
+        .Red {
+            color: red;
+            font-weight: bold;
+        }
 
-    .Footer {
-      color: #999999;
-      font-size: 12px;
-    }
+        .Footer {
+            color: #999999;
+            font-size: 12px;
+        }
 
-    p {
-      margin: 10px 0;
-    }
+        p {
+            margin: 10px 0;
+        }
 
-    .Tips {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      text-align: center;
-      color: #999999;
-      font-size: 10px;
-    }
-  </style>
+        .Tips {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: #999999;
+            font-size: 10px;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="Container">
-    <hr>
-    <p>尊敬的用户:您好!</p>
-    <p>你正在进行<span class="Red">{{Operation}}</span>操作,请在验证码输入框中输入:<span class="Red">{{Captcha}}</span>,以完成操作.</p>
-    <div class="Footer">
-      <p>请勿回复此邮件,如有问题，请联系我们.工作人员不会向你索取此验证码，请勿泄漏！</p>
+    <div class="Container">
+        <hr>
+        <p>尊敬的用户:您好!</p>
+        <p>你正在进行<span class="Red">{{Operation}}</span>操作,请在验证码输入框中输入:<span class="Red">{{Captcha}}</span>,以完成操作.</p>
+        <div class="Footer">
+            <p>请勿回复此邮件,如有问题，请联系我们.工作人员不会向你索取此验证码，请勿泄漏！</p>
+        </div>
+        <hr>
+        <p>{{Platform}}</p>
     </div>
-    <hr>
-    <p>{{Platform}}</p>
-  </div>
-  <div class="Tips">API接口由洱海工作室(https://www.elake.top)免费提供<br>页面样式由洱海之畔提供,且参考了阿里云的邮箱验证码</div>
+    <div class="Tips">API接口由洱海工作室(https://www.elake.top)免费提供<br>页面样式由洱海之畔提供,且参考了阿里云的邮箱验证码</div>
 </body>
 
 </html>

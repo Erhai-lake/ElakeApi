@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{Platform}}</title>
+    <link rel="shortcut icon" href="{{PlatformLogo}}" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            padding: 10px;
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        .Container {
+            width: 90%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .Logo {
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            background-color: #acdfff;
+        }
+
+        .Logo img {
+            width: 100px;
+            height: 100px;
+            margin-right: 25px;
+        }
+
+        .Logo p {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .Container2 {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        hr {
+            margin: 20px 0;
+        }
+
+        .Notice p {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            padding: 10px;
+            box-sizing: border-box;
+            width: 80%;
+        }
+
+        table p {
+            font-weight: bold;
+        }
+
+        .Footer {
+            color: #8b7680;
+        }
+
+        .Tips {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: #999999;
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Container">
+        <div class="Logo">
+            <img src="{{PlatformLogo}}" alt="{{Platform}}">
+            <p>{{Platform}}</p>
+        </div>
+        <div class="Container2">
+            <div class="Notice">
+                <p>这是您的{{Platform}}帐户验证码.</p>
+                检查下面的验证码以完成{{Operation}}.
+            </div>
+            <hr>
+            <table>
+                <tr>
+                    <td>{{Platform}}账号</td>
+                    <td>
+                        <p>{{ReceiversEmail}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>验证码</td>
+                    <td>
+                        <p>{{Captcha}}</p>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <div class="Footer">
+                <p>请勿回复此邮件,如有问题,请联系我们.<br><br>工作人员不会向你索取此验证码,请勿泄漏!</p>
+            </div>
+        </div>
+    </div>
+    <div class="Tips">API接口由洱海工作室(https://www.elake.top)免费提供<br>页面样式由洱海之畔提供</div>
+</body>
+
+</html>
