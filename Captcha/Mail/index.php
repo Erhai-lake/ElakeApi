@@ -9,31 +9,33 @@ use PHPMailer\PHPMailer\Exception;
 
 if ($Auth->Authenticate()) {
     // SMTP服务器
-    $Host = (string)$Auth->StringParameters('Host');
+    $Host = (string)$Auth->StringParameters('Host', $_ENV['MailBoxHost']);
     // SMTP身份验证
     $SMTPAuth = (int)$Auth->RangeIntParameters('SMTPAuth', 1, 2, 1);
     // SMTP用户名
-    $Name = (string)$Auth->StringParameters('Name');
+    $Name = (string)$Auth->StringParameters('Name', $_ENV['MailBoxMail']);
     // SMTP密码
-    $Password = (string)$Auth->StringParameters('Password');
+    $Password = (string)$Auth->StringParameters('Password', $_ENV['MailBoxPassword']);
     // SMTP端口
-    $Port = (int)$Auth->IntParameters('Port');
+    $Port = (int)$Auth->IntParameters('Port', $_ENV['MailBoxPort']);
     // 发信人邮箱地址
-    $SenderEmail = (string)$Auth->StringParameters('SenderEmail');
+    $SenderEmail = (string)$Auth->StringParameters('SenderEmail', $_ENV['MailBoxMail']);
     // 发信人名称
-    $SenderName = (string)$Auth->StringParameters('SenderName');
+    $SenderName = (string)$Auth->StringParameters('SenderName', '洱海工作室');
     // 收信人邮箱地址
     $ReceiversEmail = (string)$Auth->StringParameters('ReceiversEmail');
     // 收信人名称
     $ReceiversName = (string)$Auth->StringParameters('ReceiversName');
     // 平台
-    $Platform = (string)$Auth->StringParameters('Platform');
+    $Platform = (string)$Auth->StringParameters('Platform', '洱海工作室');
     // 平台Logo
-    $PlatformLogo = (string)$Auth->StringParameters('PlatformLogo');
+    $PlatformLogo = (string)$Auth->StringParameters('PlatformLogo', 'https://api.elake.top/Logo.png');
     // 操作
     $Operation = (string)$Auth->StringParameters('Operation');
     // 样式
     $Style = (int)$Auth->RangeIntParameters('Style', 1, count(glob('Style/*.html')), 1);
+    // 自定义样式链接
+    $StyleUrl = (string)$Auth->StringParameters('StyleUrl', '');
 }
 
 if ($ValidRequest) {
@@ -68,7 +70,12 @@ if ($ValidRequest) {
             // 收信人邮箱
             '{{ReceiversEmail}}' => $ReceiversEmail
         ];
-        $HtmlContent = strtr(file_get_contents('Style/' . $Style . '.html'), $ReplaceArray);
+        if ($StyleUrl === '') {
+            $HtmlContent = file_get_contents('Style/' . $Style . '.html');
+        } else {
+            $HtmlContent = $Auth->Curl('GET', $StyleUrl);
+        }
+        $HtmlContent = strtr($HtmlContent, $ReplaceArray);
         $Mail->isHTML(true);
         $Mail->Body = $HtmlContent;
         $Mail->send();
