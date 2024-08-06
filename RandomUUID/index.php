@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 if ($Auth->Authenticate(true)) {
     // UUID版本
-    $Version = (int)$Auth->WhitelistParameters('Version', [1, 4, 5]);
+    $Version = (int)$Auth->WhitelistParameters('Version', [1, 4, 5], 4);
     // 数量
     $Limit = (int)$Auth->RangeIntParameters('Limit', 1, 1000, 1);
     // 类型

@@ -235,7 +235,7 @@ class Auth
     }
 
     // 参数白名单
-    public function WhitelistParameters(string $Name, array $Limit)
+    public function WhitelistParameters(string $Name, array $Limit, $Default = null)
     {
         if (isset($_GET[$Name])) {
             if (in_array($_GET[$Name], $Limit)) {
@@ -245,8 +245,12 @@ class Auth
                 return;
             }
         } else {
-            $this->Return(2);
-            return;
+            if ($Default === null) {
+                $this->Return(2);
+                return;
+            } else {
+                return $Default;
+            }
         }
     }
 
