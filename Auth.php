@@ -1,6 +1,6 @@
 <?php
 // 用户验证
-// error_reporting(0);
+error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
