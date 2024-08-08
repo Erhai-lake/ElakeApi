@@ -1,6 +1,6 @@
 <?php
 // 用户验证
-error_reporting(0);
+// error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
@@ -104,7 +104,7 @@ class Auth
             if (!preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $Deprecated)) {
                 return false;
             }
-            // 通过SecretID,SecretKey获取数据
+            // 通过SecretID,SecretKey获取APP数据
             $SQL = 'SELECT * FROM APPs WHERE SecretID = ? AND SecretKey = ?';
             $STMT = $MySQL->prepare($SQL);
             $STMT->bind_param('ss', $SecretID, $SecretKey);
@@ -116,7 +116,7 @@ class Auth
                 return false;
             }
             $APPRow = $Result->fetch_assoc();
-            // 通过UserID获取数据
+            // 通过UserID获取User数据
             $SQL = 'SELECT * FROM Users WHERE UserID = ?';
             $STMT = $MySQL->prepare($SQL);
             $STMT->bind_param('s', $APPRow['UserID']);
@@ -177,7 +177,7 @@ class Auth
             if ($Default !== null) {
                 return (string)$Default;
             } else {
-                $this->Return(2);
+                $this->Return(2, $Name);
                 return;
             }
         }
@@ -192,7 +192,7 @@ class Auth
             if ($Default !== null) {
                 return (int)$Default;
             } else {
-                $this->Return(2);
+                $this->Return(2, $Name);
                 return;
             }
         }
@@ -205,7 +205,7 @@ class Auth
         if ($Value <= $Max) {
             return (int)$Value;
         } else {
-            $this->Return(3);
+            $this->Return(3, $Name);
             return;
         }
     }
@@ -217,7 +217,7 @@ class Auth
         if ($Value >= $Min) {
             return (int)$Value;
         } else {
-            $this->Return(3);
+            $this->Return(3, $Name);
             return;
         }
     }
@@ -229,7 +229,7 @@ class Auth
         if ($Value >= $Min && $Value <= $Max) {
             return (int)$Value;
         } else {
-            $this->Return(3);
+            $this->Return(3, $Name);
             return;
         }
     }
@@ -241,12 +241,12 @@ class Auth
             if (in_array($_GET[$Name], $Limit)) {
                 return $_GET[$Name];
             } else {
-                $this->Return(3);
+                $this->Return(3, $Name);
                 return;
             }
         } else {
             if ($Default === null) {
-                $this->Return(2);
+                $this->Return(2, $Name);
                 return;
             } else {
                 return $Default;
@@ -261,11 +261,11 @@ class Auth
             if (!in_array($_GET[$Name], $Limit)) {
                 return $_GET[$Name];
             } else {
-                $this->Return(3);
+                $this->Return(3, $Name);
                 return;
             }
         } else {
-            $this->Return(2);
+            $this->Return(2, $Name);
             return;
         }
     }
@@ -287,18 +287,25 @@ class Auth
         if (isset($_COOKIE[$Name]) && !empty($_COOKIE[$Name])) {
             return $_COOKIE[$Name];
         } else {
-            $this->Return(2);
+            $this->Return(2, $Name);
             return;
         }
     }
 
     // 返回
-    public function Return(int $ID): void
+    public function Return(int $ID, String $Error = null): void
     {
         global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
         $CodeArray = $Code[$ID];
         $Response['Code'] = $CodeArray['Code'];
-        $Response['Message'] = $CodeArray['Message'];
+        if ($APPRow['DeBUG'] === 1 || !isset($APPRow['DeBUG'])) {
+            $Response['Message'] = $CodeArray['Message'];
+            if ($Error !== null) {
+                $Response['Error'][] = [$CodeArray['Message'], $Error];
+            }
+        } else {
+            $Response['Message'] = $CodeArray['Message'];
+        }
         $ValidRequest = $CodeArray['ValidRequest'];
         http_response_code($CodeArray['HttpCode']);
         if ($MySQL !== null) {
@@ -310,8 +317,9 @@ class Auth
     public function Custom(string $Message): void
     {
         global $Response, $MySQL, $APPRow;
-        $this->Return(6);
+        $this->Return(6, $Message);
         $Response['Message'] = $Message;
+        $Response['Error'][] = [$Message];
         if ($MySQL !== null) {
             $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], $Message);
         }
