@@ -119,7 +119,7 @@ class Auth
             // 通过UserID获取User数据
             $SQL = 'SELECT * FROM Users WHERE UserID = ?';
             $STMT = $MySQL->prepare($SQL);
-            $STMT->bind_param('s', $APPRow['UserID']);
+            $STMT->bind_param('i', $APPRow['UserID']);
             $STMT->execute();
             $Result = $STMT->get_result();
             $STMT->close();
@@ -359,7 +359,7 @@ class Auth
             $CurrentURL = explode('?', $this->CurrentURL() . $_SERVER['REQUEST_URI'])[0];
             $SQL = 'INSERT INTO APILog (APPID, UserID, IP, DateTime, UserAgent, Message, Url) VALUES (?, ?, ?, ?, ?, ?, ?)';
             $STMT = $MySQL->prepare($SQL);
-            $STMT->bind_param('sssssss', $APPID, $UserID, $IP, date('Y-m-d H:i:s'), $UserAgent, $Message, $CurrentURL);
+            $STMT->bind_param('iistsss', $APPID, $UserID, $IP, date('Y-m-d H:i:s'), $UserAgent, $Message, $CurrentURL);
             $STMT->execute();
             $STMT->close();
         }

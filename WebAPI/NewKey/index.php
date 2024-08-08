@@ -13,7 +13,7 @@ if ($ValidRequest) {
     if ($MySQL !== null) {
         $SQL = 'SELECT APPID, UserID FROM APPs WHERE UserID = ?';
         $STMT = $MySQL->prepare($SQL);
-        $STMT->bind_param('s', $APPRow['UserID']);
+        $STMT->bind_param('i', $APPRow['UserID']);
         $STMT->execute();
         $Result = $STMT->get_result();
         $STMT->close();
@@ -22,7 +22,7 @@ if ($ValidRequest) {
             $SecretKey = NewSecretKey($SecretID);
             $SQL = 'INSERT INTO APPs (UserID, SecretID, SecretKey, AccessControl, Switch) VALUES (?, ?, ?, 0, 0)';
             $STMT = $MySQL->prepare($SQL);
-            $STMT->bind_param('sss', $UserRow['UserID'], $SecretID, $SecretKey);
+            $STMT->bind_param('iss', $UserRow['UserID'], $SecretID, $SecretKey);
             $STMT->execute();
             $STMT->close();
             $Response['Data'] = [

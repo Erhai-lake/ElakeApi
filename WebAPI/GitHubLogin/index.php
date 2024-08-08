@@ -42,21 +42,21 @@ if ($ValidRequest) {
                     $IP = $_SERVER['REMOTE_ADDR'];
                     $SQL = 'SELECT * FROM Users WHERE GitHubID = ?';
                     $STMT = $MySQL->prepare($SQL);
-                    $STMT->bind_param('s', $GitHubID);
+                    $STMT->bind_param('i', $GitHubID);
                     $STMT->execute();
                     $Result = $STMT->get_result();
                     $STMT->close();
                     if ($Result->num_rows > 0) {
                         $SQL = 'UPDATE Users SET LoginIP = ? WHERE GitHubID = ?';
                         $STMT = $MySQL->prepare($SQL);
-                        $STMT->bind_param('ss', $IP, $GitHubID);
+                        $STMT->bind_param('si', $IP, $GitHubID);
                         $STMT->execute();
                         $Response['Data'] = $GitHubID;
                         $STMT->close();
                     } else {
                         $SQL = 'INSERT INTO Users (GitHubID, UserName, LoginIP, LimitAPP, Banned) VALUES (?, ?, ?, 3, 0)';
                         $STMT = $MySQL->prepare($SQL);
-                        $STMT->bind_param('sss', $GitHubID, $GitHubName, $IP);
+                        $STMT->bind_param('iss', $GitHubID, $GitHubName, $IP);
                         $STMT->execute();
                         $UserID = $MySQL->insert_id;
                         if ($STMT->affected_rows > 0) {
@@ -65,7 +65,7 @@ if ($ValidRequest) {
                             $STMT->close();
                             $SQL = 'INSERT INTO APPs (UserID, SecretID, SecretKey, AccessControl, Switch) VALUES (?, ?, ?, 0, 0)';
                             $STMT = $MySQL->prepare($SQL);
-                            $STMT->bind_param('sss', $UserID, $SecretID, $SecretKey);
+                            $STMT->bind_param('iss', $UserID, $SecretID, $SecretKey);
                             $STMT->execute();
                             $Response['Data'] = [
                                 'SecretID' => $SecretID,

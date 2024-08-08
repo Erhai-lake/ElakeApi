@@ -11,7 +11,7 @@ if ($ValidRequest) {
     if ($MySQL !== null) {
         $SQL = 'SELECT APPID, UserID FROM APPs WHERE UserID = ?';
         $STMT = $MySQL->prepare($SQL);
-        $STMT->bind_param('s', $APPRow['UserID']);
+        $STMT->bind_param('i', $APPRow['UserID']);
         $STMT->execute();
         $Result = $STMT->get_result();
         $STMT->close();
