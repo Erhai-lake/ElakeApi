@@ -77,7 +77,7 @@ class Auth
             $Authenticat = base64_decode($Authenticat);
             $Authenticat = json_decode($Authenticat, true);
             // 对象数量不等于4
-            if (count($Authenticat) !== 4) {
+            if (count($Authenticat) !== 3) {
                 return false;
             }
             // SecretID为空
@@ -85,29 +85,24 @@ class Auth
                 return false;
             }
             $SecretID = $Authenticat['SecretID'];
-            // SecretKey为空
-            if (!isset($Authenticat['SecretKey']) || empty($Authenticat['SecretKey'])) {
+            // DS为空
+            if (!isset($Authenticat['DS']) || empty($Authenticat['DS'])) {
                 return false;
             }
-            $SecretKey = $Authenticat['SecretKey'];
+            $DS = $Authenticat['DS'];
             // Deprecated为空
             if (!isset($Authenticat['Deprecated']) || empty($Authenticat['Deprecated'])) {
                 return false;
             }
             $Deprecated = $Authenticat['Deprecated'];
-            // Timestamp为空
-            if (!isset($Authenticat['Timestamp']) || empty($Authenticat['Timestamp'])) {
-                return false;
-            }
-            $Timestamp = $Authenticat['Timestamp'];
             // Deprecated不是UUIDv4
             if (!preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $Deprecated)) {
                 return false;
             }
-            // 通过SecretID,SecretKey获取APP数据
-            $SQL = 'SELECT * FROM APPs WHERE SecretID = ? AND SecretKey = ?';
+            // 通过SecretID获取APP数据
+            $SQL = 'SELECT * FROM APPs WHERE SecretID = ?';
             $STMT = $MySQL->prepare($SQL);
-            $STMT->bind_param('ss', $SecretID, $SecretKey);
+            $STMT->bind_param('s', $SecretID);
             $STMT->execute();
             $Result = $STMT->get_result();
             $STMT->close();
@@ -116,6 +111,17 @@ class Auth
                 return false;
             }
             $APPRow = $Result->fetch_assoc();
+            $DS = explode(',', $DS);
+            // 有1分钟时差
+            $Difference = time() - $DS[0];
+            if ($Difference > 60) {
+                return false;
+            }
+            // 校验DS
+            $ComputedDS = md5('salt=' . $APPRow['SecretKey'] . '&t=' . $DS[0] . '&r=' . $DS[1]);
+            if ($ComputedDS !== $DS[2]) {
+                return false;
+            }
             // 通过UserID获取User数据
             $SQL = 'SELECT * FROM Users WHERE UserID = ?';
             $STMT = $MySQL->prepare($SQL);
@@ -156,11 +162,6 @@ class Auth
             $Redis->expire($UUID, 1 * 24 * 60 * 60);
             // APP没有启用
             if ((int)$APPRow['Switch'] !== 0) {
-                return false;
-            }
-            // 有1分钟时差
-            $Difference = time() - $Timestamp;
-            if ($Difference > 60) {
                 return false;
             }
             $this->Return(0);
@@ -316,10 +317,8 @@ class Auth
     // 自定义200错误消息
     public function Custom(string $Message): void
     {
-        global $Response, $MySQL, $APPRow;
+        global $MySQL, $APPRow;
         $this->Return(6, $Message);
-        $Response['Message'] = $Message;
-        $Response['Error'][] = [$Message];
         if ($MySQL !== null) {
             $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], $Message);
         }
@@ -359,7 +358,7 @@ class Auth
             $CurrentURL = explode('?', $this->CurrentURL() . $_SERVER['REQUEST_URI'])[0];
             $SQL = 'INSERT INTO APILog (APPID, UserID, IP, DateTime, UserAgent, Message, Url) VALUES (?, ?, ?, ?, ?, ?, ?)';
             $STMT = $MySQL->prepare($SQL);
-            $STMT->bind_param('iistsss', $APPID, $UserID, $IP, date('Y-m-d H:i:s'), $UserAgent, $Message, $CurrentURL);
+            $STMT->bind_param('iisssss', $APPID, $UserID, $IP, date('Y-m-d H:i:s'), $UserAgent, $Message, $CurrentURL);
             $STMT->execute();
             $STMT->close();
         }

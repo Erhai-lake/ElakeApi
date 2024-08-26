@@ -7,9 +7,7 @@ $Auth->Initialization();
 if ($Auth->Authenticate()) {
 }
 
-if ($ValidRequest) {
-  $Response['Data'] = (string)round((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2) . 'ms';
-}
+$Response['Data'] = (string)round((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2) . 'ms';
 
 $Auth->End();
 
