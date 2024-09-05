@@ -15,13 +15,13 @@ if ($ValidRequest) {
   try {
     $Searcher = XdbSearcher::newWithFileOnly($IPDBFile);
   } catch (Exception $E) {
-    $Auth->Custom('无法创建搜索器');
+    $Auth->Return(6, '无法创建搜索器');
   }
   if ($ValidRequest) {
     $STime = XdbSearcher::now();
     $Region = $Searcher->search($IP);
     if ($Region === null) {
-      $Auth->Custom('搜索失败');
+      $Auth->Return(6, '搜索失败');
     } else {
       $Region .= '|' . (string)round(XdbSearcher::now() - $STime, 2) . 'ms';
       $Region = explode('|', $Region);

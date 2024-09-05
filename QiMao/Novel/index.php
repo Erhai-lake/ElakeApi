@@ -18,7 +18,7 @@ if ($ValidRequest) {
     preg_match_all($Pattern, $Matches[1], $MatchesItem);
     $Response['Data'] = $MatchesItem[1];
     if (empty($Response['Data'])) {
-        $Auth->Custom('无法获取,可能是需要VIP,我没钱购入VIP,所以没法抓,抱歉...');
+        $Auth->Return(6, '无法获取,可能是需要VIP,我没钱购入VIP,所以没法抓,抱歉...');
     }
 }
 

@@ -30,7 +30,7 @@ if ($ValidRequest) {
                 'SecretKey' => $SecretKey
             ];
         } else {
-            $Auth->Custom('您最多只能创建' . $UserRow['LimitAPP'] . '个应用');
+            $Auth->Return(6, '您最多只能创建' . $UserRow['LimitAPP'] . '个应用');
         }
     }
 }

@@ -24,7 +24,7 @@ if ($ValidRequest) {
   $Image = imagecreatefromstring($Skin);
   if (imagesx($Image) != 64 || imagesy($Image) != 64) {
     imagedestroy($Image);
-    $Auth->Custom('皮肤图片不合规');
+    $Auth->Return(6, '皮肤图片不合规');
   } else {
     // 第二步: 截取头部并放大居中
     $Head = imagecreatetruecolor(192, 192);

@@ -40,7 +40,7 @@ if ($ValidRequest) {
                 'Total' => $Total
             ];
         } else {
-            $Auth->Custom('暂无数据');
+            $Auth->Return(6, '暂无数据');
         }
     }
 }

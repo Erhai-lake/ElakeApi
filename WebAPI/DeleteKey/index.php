@@ -23,7 +23,7 @@ if ($ValidRequest) {
             $STMT->close();
             $Response['Data'] = '删除成功';
         } else {
-            $Auth->Custom('您必须保留一个密钥');
+            $Auth->Return(6, '您必须保留一个密钥');
         }
     }
 }

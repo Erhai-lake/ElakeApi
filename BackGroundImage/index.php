@@ -46,7 +46,7 @@ if ($ValidRequest) {
         header('Content-Type: PNG');
         echo $Auth->Curl('GET', $Data[0]);
     } else {
-        $Auth->Custom('图床异常');
+        $Auth->Return(6, '图床异常');
     }
 }
 

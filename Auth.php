@@ -314,16 +314,6 @@ class Auth
         }
     }
 
-    // 自定义200错误消息
-    public function Custom(string $Message): void
-    {
-        global $MySQL, $APPRow;
-        $this->Return(6, $Message);
-        if ($MySQL !== null) {
-            $this->APILog($MySQL, (int)$APPRow['APPID'], (int)$APPRow['UserID'], $Message);
-        }
-    }
-
     // 数据库建立连接
     private function DatabaseEstablishesConnection(): ?mysqli
     {

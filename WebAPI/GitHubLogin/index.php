@@ -73,11 +73,11 @@ if ($ValidRequest) {
                             ];
                             $STMT->close();
                         } else {
-                            $Auth->Custom('注册失败');
+                            $Auth->Return(6, '注册失败');
                         }
                     }
                 } else {
-                    $Auth->Custom('认证错误');
+                    $Auth->Return(6, '认证错误');
                 }
             } else {
                 $CodeArray = $Code[1];

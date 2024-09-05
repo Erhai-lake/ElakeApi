@@ -81,7 +81,7 @@ if ($ValidRequest) {
         $Mail->send();
         $Response['Data'] = Argon2Encipher($RandomText);
     } catch (Exception $E) {
-        $Auth->Custom('邮件发送失败');
+        $Auth->Return(6, '邮件发送失败');
     }
 }
 
