@@ -185,13 +185,13 @@ class Auth
     }
 
     // TODO 传入数值参数
-    public function IntParameters(string $Name, int $Default = null)
+    public function IntParameters(string $Name, float $Default = null)
     {
         if (isset($_GET[$Name])) {
-            return (int)$_GET[$Name];
+            return (float)$_GET[$Name];
         } else {
             if ($Default !== null) {
-                return (int)$Default;
+                return (float)$Default;
             } else {
                 $this->Return(2, $Name);
                 return;
@@ -200,11 +200,11 @@ class Auth
     }
 
     // TODO 传入数值参数(带最大判断)
-    public function MaxRangeIntParameters(string $Name, int $Max, int $Default = null)
+    public function MaxRangeIntParameters(string $Name, float $Max, float $Default = null)
     {
-        $Value = (int)$this->IntParameters($Name, $Default);
+        $Value = (float)$this->IntParameters($Name, $Default);
         if ($Value <= $Max) {
-            return (int)$Value;
+            return (float)$Value;
         } else {
             $this->Return(3, $Name);
             return;
@@ -212,11 +212,11 @@ class Auth
     }
 
     // TODO 传入数值参数(带最小判断)
-    public function MinRangeIntParameters(string $Name, int $Min, int $Default = null)
+    public function MinRangeIntParameters(string $Name, float $Min, float $Default = null)
     {
-        $Value = (int)$this->IntParameters($Name, $Default);
+        $Value = (float)$this->IntParameters($Name, $Default);
         if ($Value >= $Min) {
-            return (int)$Value;
+            return (float)$Value;
         } else {
             $this->Return(3, $Name);
             return;
@@ -224,11 +224,11 @@ class Auth
     }
 
     // TODO 传入数值参数(带最大最小判断)
-    public function RangeIntParameters(string $Name, int $Min, int $Max, int $Default = null)
+    public function RangeIntParameters(string $Name, float $Min, float $Max, float $Default = null)
     {
-        $Value = (int)$this->IntParameters($Name, $Default);
+        $Value = (float)$this->IntParameters($Name, $Default);
         if ($Value >= $Min && $Value <= $Max) {
-            return (int)$Value;
+            return (float)$Value;
         } else {
             $this->Return(3, $Name);
             return;
