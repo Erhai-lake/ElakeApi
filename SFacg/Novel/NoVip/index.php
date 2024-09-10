@@ -5,20 +5,20 @@ $Auth = new Auth();
 $Auth->Initialization();
 
 if ($Auth->Authenticate()) {
-  // 小说ID
-  $NovelID = (string)$Auth->StringParameters('NovelID');
-  // 卷ID
-  $ReelID = (string)$Auth->StringParameters('ReelID');
-  // 章节ID
-  $ChaptersID = (string)$Auth->StringParameters('ChaptersID');
+    // 小说ID
+    $NovelID = (string)$Auth->StringParameters('NovelID');
+    // 卷ID
+    $ReelID = (string)$Auth->StringParameters('ReelID');
+    // 章节ID
+    $ChaptersID = (string)$Auth->StringParameters('ChaptersID');
 }
 
 if ($ValidRequest) {
-  $Pattern = '/<div class="article-content font16" id="ChapterBody" data-class="font16">.\s*(.*?)<\/div>/s';
-  preg_match_all($Pattern, $Auth->Curl('GET', 'https://book.sfacg.com/Novel/' . $NovelID . '/' . $ReelID . '/' . $ChaptersID), $Matches);
-  $Pattern2 = '/<p>(.*?)<\/p>/s';
-  preg_match_all($Pattern2, $Matches[1][0], $NovelMatches);
-  $Response['Data'] = $NovelMatches[1];
+    $Pattern = '/<div class="article-content font16" id="ChapterBody" data-class="font16">.\s*(.*?)<\/div>/s';
+    preg_match_all($Pattern, $Auth->Curl('GET', 'https://book.sfacg.com/Novel/' . $NovelID . '/' . $ReelID . '/' . $ChaptersID), $Matches);
+    $Pattern2 = '/<p>(.*?)<\/p>/s';
+    preg_match_all($Pattern2, $Matches[1][0], $NovelMatches);
+    $Response['Data'] = $NovelMatches[1];
 }
 
 $Auth->End();

@@ -5,17 +5,17 @@ $Auth = new Auth();
 $Auth->Initialization();
 
 if ($Auth->Authenticate()) {
-  // 问题
-  $Query = (string)$Auth->StringParameters('Query');
+    // 问题
+    $Query = (string)$Auth->StringParameters('Query');
 }
 
 if ($ValidRequest) {
-  $Url = $Auth->CurrentURL() . '/HelpLazy';
-  $Response['Data'] = [
-    'BaiDu' => $Url . '/BaiDu?Query=' . base64_encode($Query),
-    'Bing' => $Url . '/Bing?Query=' . base64_encode($Query),
-    'Google' => $Url . '/Google?Query=' . base64_encode($Query)
-  ];
+    $Url = $Auth->CurrentURL() . '/HelpLazy';
+    $Response['Data'] = [
+        'BaiDu' => $Url . '/BaiDu?Query=' . base64_encode($Query),
+        'Bing' => $Url . '/Bing?Query=' . base64_encode($Query),
+        'Google' => $Url . '/Google?Query=' . base64_encode($Query)
+    ];
 }
 
 $Auth->End();

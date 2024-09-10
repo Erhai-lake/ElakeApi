@@ -5,26 +5,26 @@ $Auth = new Auth();
 $Auth->Initialization();
 
 if ($Auth->Authenticate()) {
-  // 小说ID
-  $NovelID = (string)$Auth->StringParameters('NovelID');
-  // 章节ID
-  $ChaptersID = (string)$Auth->StringParameters('ChaptersID');
-  // 社区
-  $Community = (string)$Auth->CookieParameters('Community');
+    // 小说ID
+    $NovelID = (string)$Auth->StringParameters('NovelID');
+    // 章节ID
+    $ChaptersID = (string)$Auth->StringParameters('ChaptersID');
+    // 社区
+    $Community = (string)$Auth->CookieParameters('Community');
 }
 
 if ($ValidRequest) {
-  header("Content-Type: PNG");
-  $Parameters = [
-    'op' => 'getChapPic',
-    'cid' => $ChaptersID,
-    'nid' => $NovelID
-  ];
-  $Header = [
-    'Cookie: .SFCommunity=' . $Community
-  ];
-  echo $Auth->Curl('GET', 'https://book.sfacg.com/ajax/ashx/common.ashx', $Parameters, $Header);
-  exit();
+    header("Content-Type: PNG");
+    $Parameters = [
+        'op' => 'getChapPic',
+        'cid' => $ChaptersID,
+        'nid' => $NovelID
+    ];
+    $Header = [
+        'Cookie: .SFCommunity=' . $Community
+    ];
+    echo $Auth->Curl('GET', 'https://book.sfacg.com/ajax/ashx/common.ashx', $Parameters, $Header);
+    exit();
 }
 
 $Auth->End();

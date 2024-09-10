@@ -5,20 +5,20 @@ $Auth = new Auth();
 $Auth->Initialization();
 
 if ($Auth->Authenticate()) {
-  // QQ号
-  $QQ = (string)$Auth->StringParameters('QQ');
-  // 类型
-  $Type = (int)$Auth->RangeIntParameters('Type', 1, 2);
+    // QQ号
+    $QQ = (string)$Auth->StringParameters('QQ');
+    // 类型
+    $Type = (int)$Auth->RangeIntParameters('Type', 1, 2);
 }
 
 if ($ValidRequest) {
-  if ($Type === 1) {
-    header('Content-Type: PNG');
-    echo $Auth->Curl('GET', 'https://qlogo4.store.qq.com/qzone/' . $QQ . '/' . $QQ . '/100');
-    exit();
-  } else {
-    $Response['Data'] = 'https://qlogo4.store.qq.com/qzone/' . $QQ . '/' . $QQ . '/100';
-  }
+    if ($Type === 1) {
+        header('Content-Type: PNG');
+        echo $Auth->Curl('GET', 'https://qlogo4.store.qq.com/qzone/' . $QQ . '/' . $QQ . '/100');
+        exit();
+    } else {
+        $Response['Data'] = 'https://qlogo4.store.qq.com/qzone/' . $QQ . '/' . $QQ . '/100';
+    }
 }
 
 $Auth->End();

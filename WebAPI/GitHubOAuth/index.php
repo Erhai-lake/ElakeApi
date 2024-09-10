@@ -10,7 +10,7 @@ if ($Auth->Authenticate(true)) {
 }
 
 if ($ValidRequest) {
-  $Response['Data'] = 'https://github.com/login/oauth/authorize?client_id=' . $_ENV['GitHubClientId'] . '&redirect_uri=' . $Auth->CurrentURL() . '/WebAPI/GitHubLogin&state=' . UUIDv4();
+    $Response['Data'] = 'https://github.com/login/oauth/authorize?client_id=' . $_ENV['GitHubClientId'] . '&redirect_uri=' . $Auth->CurrentURL() . '/WebAPI/GitHubLogin&state=' . UUIDv4();
 }
 
 $Auth->End();
@@ -20,7 +20,7 @@ echo json_encode($Response);
 
 function UUIDv4(): string
 {
-  $UUID = Uuid::uuid4();
-  $UUIDString = strtoupper($UUID->toString());
-  return $UUIDString;
+    $UUID = Uuid::uuid4();
+    $UUIDString = strtoupper($UUID->toString());
+    return $UUIDString;
 }

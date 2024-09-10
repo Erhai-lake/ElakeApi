@@ -5,31 +5,31 @@ $Auth = new Auth();
 $Auth->Initialization();
 
 if ($Auth->Authenticate()) {
-  // 备案号
-  $ICP = (string)$Auth->StringParameters('ICP');
+    // 备案号
+    $ICP = (string)$Auth->StringParameters('ICP');
 }
 
 if ($ValidRequest) {
-  $Parameters = [
-    'keyword' => $ICP
-  ];
-  $Pattern = '/<div class="value">(.*?)<\/div>/s';
-  preg_match_all($Pattern, $Auth->Curl('GET', 'https://icp.gov.moe/', $Parameters), $Matches);
-  $Name = isset($Matches[1][0]) ? $Matches[1][0] : "无";
-  $Domain = isset($Matches[1][1]) ? $Matches[1][1] : "无";
-  $Info = isset($Matches[1][3]) ? $Matches[1][3] : "无";
-  $Icp = isset($Matches[1][4]) ? $Matches[1][4] : "无";
-  $Owner = isset($Matches[1][5]) ? $Matches[1][5] : "无";
-  $UpdateDate = isset($Matches[1][6]) ? $Matches[1][6] : "无";
-  $Status = isset($Matches[1][7]) ? $Matches[1][7] : "无";
-  $Response['Data'] = [
-    'Name' => $Name,
-    'Domain' => $Domain,
-    'Info' => $Info,
-    'Icp' => $Icp,
-    'Owner' => $Owner,
-    'UpdateDate' => $UpdateDate
-  ];
+    $Parameters = [
+        'keyword' => $ICP
+    ];
+    $Pattern = '/<div class="value">(.*?)<\/div>/s';
+    preg_match_all($Pattern, $Auth->Curl('GET', 'https://icp.gov.moe/', $Parameters), $Matches);
+    $Name = isset($Matches[1][0]) ? $Matches[1][0] : "无";
+    $Domain = isset($Matches[1][1]) ? $Matches[1][1] : "无";
+    $Info = isset($Matches[1][3]) ? $Matches[1][3] : "无";
+    $Icp = isset($Matches[1][4]) ? $Matches[1][4] : "无";
+    $Owner = isset($Matches[1][5]) ? $Matches[1][5] : "无";
+    $UpdateDate = isset($Matches[1][6]) ? $Matches[1][6] : "无";
+    $Status = isset($Matches[1][7]) ? $Matches[1][7] : "无";
+    $Response['Data'] = [
+        'Name' => $Name,
+        'Domain' => $Domain,
+        'Info' => $Info,
+        'Icp' => $Icp,
+        'Owner' => $Owner,
+        'UpdateDate' => $UpdateDate
+    ];
 }
 
 $Auth->End();

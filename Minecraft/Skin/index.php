@@ -5,21 +5,21 @@ $Auth = new Auth();
 $Auth->Initialization();
 
 if ($Auth->Authenticate()) {
-  // UUID
-  $UUID = (string)$Auth->StringParameters('UUID');
-  // 类型
-  $Type = (int)$Auth->RangeIntParameters('Type', 1, 2);
+    // UUID
+    $UUID = (string)$Auth->StringParameters('UUID');
+    // 类型
+    $Type = (int)$Auth->RangeIntParameters('Type', 1, 2);
 }
 
 if ($ValidRequest) {
-  $DataJson = json_decode(base64_decode(json_decode($Auth->Curl('GET', 'https://sessionserver.mojang.com/session/minecraft/profile/' . $UUID), true)['properties'][0]['value']), true)['textures'];
-  if ($Type === 1) {
-    header('Content-Type: PNG');
-    echo $Auth->Curl('GET', $DataJson['SKIN']['url']);
-    exit();
-  } else {
-    $Response['Data'] = 'data:image/png;base64,' . base64_encode($Auth->Curl('GET', $DataJson['SKIN']['url']));
-  }
+    $DataJson = json_decode(base64_decode(json_decode($Auth->Curl('GET', 'https://sessionserver.mojang.com/session/minecraft/profile/' . $UUID), true)['properties'][0]['value']), true)['textures'];
+    if ($Type === 1) {
+        header('Content-Type: PNG');
+        echo $Auth->Curl('GET', $DataJson['SKIN']['url']);
+        exit();
+    } else {
+        $Response['Data'] = 'data:image/png;base64,' . base64_encode($Auth->Curl('GET', $DataJson['SKIN']['url']));
+    }
 }
 
 $Auth->End();

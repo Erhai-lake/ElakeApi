@@ -8,7 +8,7 @@ if ($Auth->Authenticate()) {
 }
 
 if ($ValidRequest) {
-  $Response['Data'] = (string)$_SERVER['REMOTE_ADDR'];
+    $Response['Data'] = (string)$_SERVER['REMOTE_ADDR'];
 }
 
 $Auth->End();
