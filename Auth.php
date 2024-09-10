@@ -1,5 +1,5 @@
 <?php
-// 用户验证
+// TODO 用户验证
 error_reporting(0);
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
@@ -25,7 +25,7 @@ $UserRow = null;
 
 class Auth
 {
-    // 初始化
+    // TODO 初始化
     public function Initialization(): void
     {
         global $MySQL, $Redis;
@@ -38,7 +38,7 @@ class Auth
         }
     }
 
-    // 结束
+    // TODO 结束
     public function End(): void
     {
         global $MySQL, $Redis;
@@ -52,7 +52,7 @@ class Auth
         $Redis->close();
     }
 
-    // 身份验证
+    // TODO 身份验证
     public function Authenticate(bool $AuthenticateSwitch = false): bool
     {
         global $MySQL, $Redis, $Authenticat, $APPRow, $UserRow;
@@ -169,7 +169,7 @@ class Auth
         }
     }
 
-    // 传入字符串参数
+    // TODO 传入字符串参数
     public function StringParameters(string $Name, string $Default = null)
     {
         if (isset($_GET[$Name]) && !empty($_GET[$Name])) {
@@ -184,7 +184,7 @@ class Auth
         }
     }
 
-    // 传入数值参数
+    // TODO 传入数值参数
     public function IntParameters(string $Name, int $Default = null)
     {
         if (isset($_GET[$Name])) {
@@ -199,7 +199,7 @@ class Auth
         }
     }
 
-    // 传入数值参数(带最大判断)
+    // TODO 传入数值参数(带最大判断)
     public function MaxRangeIntParameters(string $Name, int $Max, int $Default = null)
     {
         $Value = (int)$this->IntParameters($Name, $Default);
@@ -211,7 +211,7 @@ class Auth
         }
     }
 
-    // 传入数值参数(带最小判断)
+    // TODO 传入数值参数(带最小判断)
     public function MinRangeIntParameters(string $Name, int $Min, int $Default = null)
     {
         $Value = (int)$this->IntParameters($Name, $Default);
@@ -223,7 +223,7 @@ class Auth
         }
     }
 
-    // 传入数值参数(带最大最小判断)
+    // TODO 传入数值参数(带最大最小判断)
     public function RangeIntParameters(string $Name, int $Min, int $Max, int $Default = null)
     {
         $Value = (int)$this->IntParameters($Name, $Default);
@@ -235,7 +235,7 @@ class Auth
         }
     }
 
-    // 参数白名单
+    // TODO 参数白名单
     public function WhitelistParameters(string $Name, array $Limit, $Default = null)
     {
         if (isset($_GET[$Name])) {
@@ -255,7 +255,7 @@ class Auth
         }
     }
 
-    // 参数白名单
+    // TODO 参数白名单
     public function BlacklistParameters(string $Name, array $Limit)
     {
         if (isset($_GET[$Name])) {
@@ -271,7 +271,7 @@ class Auth
         }
     }
 
-    // 正则参数
+    // TODO 正则参数
     public function PCREParameters($Value, string $PCREP, bool $Bool)
     {
         if (preg_match($PCREP, $Value) == $Bool) {
@@ -282,7 +282,7 @@ class Auth
         }
     }
 
-    // 传入Cookie
+    // TODO 传入Cookie
     public function CookieParameters(string $Name)
     {
         if (isset($_COOKIE[$Name]) && !empty($_COOKIE[$Name])) {
@@ -293,7 +293,7 @@ class Auth
         }
     }
 
-    // 返回
+    // TODO 返回
     public function Return(int $ID, String $Error = null): void
     {
         global $Code, $ValidRequest, $Response, $MySQL, $APPRow;
@@ -314,7 +314,7 @@ class Auth
         }
     }
 
-    // 数据库建立连接
+    // TODO 数据库建立连接
     private function DatabaseEstablishesConnection(): ?mysqli
     {
         $MySQL = new mysqli($_ENV['MySQLHost'], $_ENV['MySQLName'], $_ENV['MySQLPassword'], $_ENV['MySQLDatabase'], $_ENV['MySQLPort']);
@@ -325,7 +325,7 @@ class Auth
         return null;
     }
 
-    // 缓存建立连接
+    // TODO 缓存建立连接
     private function CacheEstablishesConnection(): ?redis
     {
         $Redis = new Redis();
@@ -339,7 +339,7 @@ class Auth
         return null;
     }
 
-    // 写API日志
+    // TODO 写API日志
     private function APILog(mysqli $MySQL, int $APPID, int $UserID, string $Message): void
     {
         if ($MySQL !== null) {
@@ -354,7 +354,7 @@ class Auth
         }
     }
 
-    // 获取当前网址
+    // TODO 获取当前网址
     public function CurrentURL(): string
     {
         $Protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
@@ -363,7 +363,7 @@ class Auth
         return $CurrentURL;
     }
 
-    // 请求
+    // TODO 请求
     public function Curl(string $Request, string $Url, array $Parameters = [], array $Header = []): string
     {
         $Curl = curl_init();
