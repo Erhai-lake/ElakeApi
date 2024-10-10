@@ -19,6 +19,9 @@ if ($ValidRequest) {
     $Height = imagesy($Image);
     // 存放调整大小后的图片
     $ResizedImage = imagecreatetruecolor($Size, $Size);
+    // 启用alpha通道透明度混合
+    imagealphablending($ResizedImage, false);
+    imagesavealpha($ResizedImage, true);
     imagecopyresampled($ResizedImage, $Image, 0, 0, 0, 0, $Size, $Size, $Width, $Height);
     // 输出
     header('Content-Type: PNG');
