@@ -12,7 +12,7 @@ if ($Auth->Authenticate(true)) {
 }
 
 if ($ValidRequest) {
-    $Dictionary = json_decode(file_get_contents('../Dictionary.json'), true);
+    $Dictionary = json_decode(file_get_contents('//api.elake.top/FanQieNovel/Dictionary.json'), true);
     if ($Dictionary[$Code] !== null) {
         $Response['Data'] = '词库已收录该码点';
     } else{
@@ -21,7 +21,7 @@ if ($ValidRequest) {
         ];
         $DataArray = $Dictionary + $NewData;
         $NewJsonString = json_encode($DataArray, JSON_UNESCAPED_UNICODE);
-        file_put_contents('../Dictionary.json', $NewJsonString);
+        file_put_contents('//api.elake.top/FanQieNovel/Dictionary.json', $NewJsonString);
         $Response['Data'] = '收录成功';
     }
 }
