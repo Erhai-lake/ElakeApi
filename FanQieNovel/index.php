@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/Auth.php';
 $Auth = new Auth();
 $Auth->Initialization();
 
-if ($Auth->Authenticate(true)) {
+if ($Auth->Authenticate()) {
     // 番茄小说ID
     $ID = (string)$Auth->StringParameters('ID');
 }
