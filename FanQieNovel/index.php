@@ -10,7 +10,7 @@ if ($Auth->Authenticate(true)) {
 }
 
 if ($ValidRequest) {
-    $Dictionary = json_decode($Auth->Curl('GET', '//api.elake.top/FanQieNovel/Dictionary.json'), true);
+    $Dictionary = json_decode(file_get_contents('Dictionary.json'), true);
     $Pattern = '/<div class="muye-reader-box font-DNMrHsV173Pd4pgy muye-reader-content-16.*?>(.*?)<\/button><\/div><\/div>/s';
     preg_match($Pattern, $Auth->Curl('GET', 'https://fanqienovel.com/reader/' . $ID), $Matches);
     $Pattern = '/<h1 class="muye-reader-title">(.*?)<\/h1>.*?<\/span>(.*?)<!-- -->字.*?<\/span>.*?<\/span>(.*?)<\/span>.*?<div>(.*?)<\/div>/s';
