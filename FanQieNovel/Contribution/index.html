@@ -112,7 +112,7 @@
                 SubmitBut.disabled = true
                 Input.disabled = true
                 // 网络请求
-                fetch(`//localhost:88/FanQieNovel/Add?Code=${Code.textContent}&Character=${Value}`).then(res => res.json()).then(Data => {
+                fetch(`//api.elake.top/FanQieNovel/Add?Code=${Code.textContent}&Character=${Value}`).then(res => res.json()).then(Data => {
                     GetData()
                     Input.value = ''
                     SubmitBut.innerText = '获取下一个...'
@@ -123,8 +123,7 @@
         // 获取数据
         const GetData = () => {
             // 网络请求
-            fetch('//localhost:88/FanQieNovel/Contribution/API.php').then(res => res.json()).then(Data => {
-                // fetch('//api.elake.top/FanQieNovel/Contribution/API.php').then(res => res.json()).then(Data => {
+            fetch('//api.elake.top/FanQieNovel/Contribution/API.php').then(res => res.json()).then(Data => {
                 Code.textContent = Data.Data[1]
                 FQ.textContent = Data.Data[0]
                 // 解除禁用
