@@ -12,7 +12,7 @@ if ($Auth->Authenticate(true)) {
 }
 
 if ($ValidRequest) {
-    $Dictionary = json_decode(file_get_contents('//api.elake.top/FanQieNovel/Dictionary.json'), true);
+    $Dictionary = json_decode($Auth->Curl('GET', '//api.elake.top/FanQieNovel/Dictionary.json'), true);
     if ($Dictionary[$Code] !== null) {
         $Response['Data'] = '词库已收录该码点';
     } else{
