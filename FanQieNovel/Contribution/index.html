@@ -51,26 +51,32 @@
 <body>
     <p class="Title">感谢您能为词库提交贡献!</p>
     <div class="Main">
-        <p><span>码点: </span><span class="Content">*</span></p>
-        <p><span>前: </span><span class="Content">*</span><span> 后: </span><span class="Content">*</span></p>
+        <p><span>码点: </span><span class="Content" id="Code">*</span></p>
+        <p><span>前: </span><span class="Content" id="Q">*</span><span> 后: </span><span class="Content" id="H">*</span></p>
         <p>请输入这是什么字:</p>
         <input type="text" id="input" placeholder="请输入" maxlength="1">
         <button id="submit">提交\下一个</button>
     </div>
     <script>
-        const SubmitBut = document.getElementById("submit")
-        SubmitBut.addEventListener("click", () => {
-            const Input = document.getElementById("input").value
+        const SubmitBut = document.getElementById('submit')
+        SubmitBut.addEventListener('click', () => {
+            const Input = document.getElementById('input').value
             console.log(Input)
         })
 
         const Submit = (Value) => {
-
+            GetData()
         }
 
         const GetData = () => {
-            
+            fetch('//api.elake.top/FanQieNovel/Contribution/API.php').then(res => res.json()).then(Data => {
+                document.querySelector('.Code').innerHTML = Data.Data[1]
+                document.querySelector('.Q').innerHTML = Data.Data[0]
+                document.querySelector('.H').innerHTML = Data.Data[0]
+            })
         }
+
+        GetData()
     </script>
 </body>
 
