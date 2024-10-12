@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>词库贡献</title>
+    <style>
+        * {
+            bottom: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .Title {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .Main {
+            padding: 10px;
+            background-color: #b9b9b9;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .Content {
+            padding: 3px 10px;
+            background-color: #80ceff;
+            border-radius: 3px;
+        }
+
+        #input {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <p class="Title">感谢您能为词库提交贡献!</p>
+    <div class="Main">
+        <p><span>码点: </span><span class="Content">*</span></p>
+        <p><span>前: </span><span class="Content">*</span><span> 后: </span><span class="Content">*</span></p>
+        <p>请输入这是什么字:</p>
+        <input type="text" id="input" placeholder="请输入" maxlength="1">
+        <button id="submit">提交\下一个</button>
+    </div>
+    <script>
+        const SubmitBut = document.getElementById("submit")
+        SubmitBut.addEventListener("click", () => {
+            const Input = document.getElementById("input").value
+            console.log(Input)
+        })
+
+        const Submit = (Value) => {
+
+        }
+
+        const GetData = () => {
+            
+        }
+    </script>
+</body>
+
+</html>
