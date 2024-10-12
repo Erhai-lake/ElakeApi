@@ -70,9 +70,9 @@
 
         const GetData = () => {
             fetch('//api.elake.top/FanQieNovel/Contribution/API.php').then(res => res.json()).then(Data => {
-                document.querySelector('.Code').innerHTML = Data.Data[1]
-                document.querySelector('.Q').innerHTML = Data.Data[0]
-                document.querySelector('.H').innerHTML = Data.Data[0]
+                document.querySelector('.Code').textContent = Data.Data[1]
+                document.querySelector('.Q').textContent = Data.Data[0]
+                document.querySelector('.H').textContent = Data.Data[0]
             })
         }
 
