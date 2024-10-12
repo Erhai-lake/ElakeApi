@@ -9,6 +9,7 @@
         * {
             bottom: 0;
             padding: 0;
+            user-select: none;
         }
 
         body {
@@ -36,13 +37,16 @@
             align-items: center;
         }
 
-        .Content {
-            padding: 3px 10px;
+        #Code {
+            padding: 3px 0;
+            width: 100%;
             background-color: #80ceff;
+            text-align: center;
             border-radius: 3px;
         }
 
-        #input {
+        #Input {
+            width: 100%;
             text-align: center;
         }
 
@@ -51,8 +55,18 @@
             src: url('zt.woff2');
         }
 
-        #H {
+        #FQ {
             font-family: 'FQ';
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        #Submit {
+            padding: 5px 0;
+            width: 100%;
+            background-color: #80ceff;
+            border: none;
+            border-radius: 3px;
         }
     </style>
 </head>
@@ -60,28 +74,63 @@
 <body>
     <p class="Title">感谢您能为词库提交贡献!</p>
     <div class="Main">
-        <p><span>码点: </span><span class="Content" id="Code">*</span></p>
-        <p><span>前: </span><span class="Content" id="Q">*</span><span> 后: </span><span class="Content" id="H">*</span></p>
+        <p id="Code">*</p>
+        <p id="FQ">*</p>
         <p>请输入这是什么字:</p>
-        <input type="text" id="input" placeholder="请输入" maxlength="1">
-        <button id="submit">提交\下一个</button>
+        <input type="text" id="Input" placeholder="请输入" maxlength="1">
+        <p>请多次检查无误后按下回车键或者提交按钮</p>
+        <button id="Submit">提交\下一个</button>
     </div>
     <script>
-        const SubmitBut = document.getElementById('submit')
+        // 获取提交按钮
+        const SubmitBut = document.getElementById('Submit')
+        // 获取输入框
+        const Input = document.getElementById('Input')
+        // 获取码点
+        const Code = document.getElementById('Code')
+        // 获取FQ
+        const FQ = document.getElementById('FQ')
+
+        // 监听提交按钮
         SubmitBut.addEventListener('click', () => {
-            const Input = document.getElementById('input').value
-            console.log(Input)
+            Submit(Input.value)
         })
 
+        // 监听输入框回车
+        Input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                Submit(Input.value)
+            }
+        })
+
+        // 提交
         const Submit = (Value) => {
-            GetData()
+            // 判断输入框是否为空
+            if (Value !== '') {
+                // 禁用
+                SubmitBut.innerText = '提交中...'
+                SubmitBut.disabled = true
+                Input.disabled = true
+                // 网络请求
+                fetch(`//localhost:88/FanQieNovel/Add?Code=${Code.textContent}&Character=${Value}`).then(res => res.json()).then(Data => {
+                    GetData()
+                    Input.value = ''
+                    SubmitBut.innerText = '获取下一个...'
+                })
+            }
         }
 
+        // 获取数据
         const GetData = () => {
-            fetch('//api.elake.top/FanQieNovel/Contribution/API.php').then(res => res.json()).then(Data => {
-                document.getElementById('Code').textContent = Data.Data[1]
-                document.getElementById('Q').textContent = Data.Data[0]
-                document.getElementById('H').textContent = Data.Data[0]
+            // 网络请求
+            fetch('//localhost:88/FanQieNovel/Contribution/API.php').then(res => res.json()).then(Data => {
+                // fetch('//api.elake.top/FanQieNovel/Contribution/API.php').then(res => res.json()).then(Data => {
+                Code.textContent = Data.Data[1]
+                FQ.textContent = Data.Data[0]
+                // 解除禁用
+                SubmitBut.innerText = '提交\\下一个'
+                SubmitBut.disabled = false
+                Input.disabled = false
             })
         }
 
