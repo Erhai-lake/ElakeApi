@@ -33,9 +33,9 @@ class Auth
             $this->Return(7);
         } else {
             $this->Return(1);
-            $MySQL = $this->DatabaseEstablishesConnection();
-            $Redis = $this->CacheEstablishesConnection();
         }
+        $MySQL = $this->DatabaseEstablishesConnection();
+        $Redis = $this->CacheEstablishesConnection();
     }
 
     // 结束
@@ -63,6 +63,11 @@ class Auth
         // 缓存连接失败
         if ($Redis === null) {
             return false;
+        }
+        // DeBUG模式调用测试
+        if ($_ENV['DeBUG'] === 'true' && isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $this->Return(0);
+            return true;
         }
         if ($AuthenticateSwitch) {
             $this->Return(0);
